@@ -23,12 +23,12 @@ services:
     volumes:
       - "./mysql:/var/lib/mysql"
     env_file: .env
-    ports:
-      - "3306:3306"
+    expose:
+      - "3306"
     restart: always
     environment:
-      - MYSQL_ROOT_PASSWORD=${PASSWORD}
       - MYSQL_DATABASE=${DB_NAME}
+      - MYSQL_ROOT_PASSWORD=${DB_PASSWORD}
     networks:
       - db_network
   nginx:
