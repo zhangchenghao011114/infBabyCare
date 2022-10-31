@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'backlogic.apps.BacklogicConfig',
 ]
 
 MIDDLEWARE = [
@@ -76,9 +77,9 @@ WSGI_APPLICATION = 'django_app.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': '[DB_NAME]',
+        'NAME': 'test',
         'USER': 'root',
-        'PASSWORD': '[DB_PASSWORD]',
+        'PASSWORD': '123456',
         'HOST': 'db',
         'PORT': '3306',
         'OPTIONS': {'charset': 'utf8mb4'},
