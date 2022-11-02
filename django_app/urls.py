@@ -21,5 +21,7 @@ from backlogic import views
 urlpatterns = [
     #path('admin/', admin.site.urls),
     # path('img/',)
-    path('test/',views.test)
+    path('test',views.test),
+    path('sqltest',views.sqltest),
+    path('login',views.login),
 ]
