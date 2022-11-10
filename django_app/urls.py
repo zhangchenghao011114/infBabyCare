@@ -24,4 +24,5 @@ urlpatterns = [
     path('test',views.test),
     path('sqltest',views.sqltest),
     path('login',views.login),
+    path('register',views.register),
 ]
