@@ -38,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'backlogic.apps.BacklogicConfig',
+    'HeadNurseBackstage.apps.HeadNurseBackstageConfig',
+    # 'HeadNurseBackstage',
 ]
 
 MIDDLEWARE = [
@@ -123,5 +125,18 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
-STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
+#STATIC_URL = '/static/' #别名
+# STATICFILES_DIRS = (
+#     os.path.join(BASE_DIR,'collected_static')
+# )
+#STATIC_ROOT = os.path.join(BASE_DIR, 'collected_static')
+#STATICFILES_DIRS = [
+
+#os.path.join(STATIC_ROOT, 'css'),
+#os.path.join(STATIC_ROOT, 'images'),
+#os.path.join(STATIC_ROOT, 'js'),
+#]
+
+STATIC_URL = '/static/' #别名
+STATIC_ROOT = '/code/collected_static'
+

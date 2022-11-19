@@ -10,7 +10,7 @@ services:
       gunicorn --timeout=30 --workers=4 --bind :8000 django_app.wsgi:application"
     volumes:
       - .:/code
-      - static-volume:/code/static
+      - ./collected_static:/code/static
     expose:
       - "8000"
     depends_on:
@@ -37,7 +37,7 @@ services:
     ports:
       - "8001:8000"
     volumes:
-      - static-volume:/code/static
+      - ./collected_static:/code/static
       - ./config/nginx:/etc/nginx/conf.d
     depends_on:
       - app

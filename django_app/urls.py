@@ -1,28 +1,20 @@
-"""django_app URL Configuration
-
-The `urlpatterns` list routes URLs to views. For more information please see:
-    https://docs.djangoproject.com/en/2.2/topics/http/urls/
-Examples:
-Function views
-    1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
-Class-based views
-    1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
-Including another URLconf
-    1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
-"""
 from django.contrib import admin
-from django.urls import path
-
+from django.urls import path,include 
+from django.views.static import serve
 from backlogic import views
+from HeadNurseBackstage import views as headnurse_views
+import os
 
 urlpatterns = [
     #path('admin/', admin.site.urls),
     # path('img/',)
-    path('test',views.test),
-    path('sqltest',views.sqltest),
-    path('login',views.login),
-    path('register',views.register),
+    path('',headnurse_views.logpage),       # 登录页
+    path('mainpage',headnurse_views.mainpage),       # 主页
+    path('test',views.test.as_view()),
+    path('login',views.login.as_view()),
+    path('register',views.register.as_view()),
+    path('img/<str:img_name>/',views.img.as_view()),
+    path('test/<str:html_file>',views.testhtml.as_view()),
+    path('api/patient/<str:patient_id>',views.patientGroups.as_view()),
+    path('api/infusion',views.infusionGroups.as_view()),
 ]
