@@ -25,6 +25,14 @@ def decode_jwt(token):
     #payload = ''
     return payload
 
+def decode_jwt_back(token):
+    try:
+        payload = jwt.decode(token,secret1,algorithms=['HS256'])
+        #payload = ''
+        return payload
+    except jwt.exceptions.ExpiredSignatureError:
+        return False
+
 def verify_jwt(token):
     obj = NurseInfo.objects.filter(login_jwt = token)
     try: 

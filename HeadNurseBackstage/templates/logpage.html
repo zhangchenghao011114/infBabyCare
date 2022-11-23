@@ -28,15 +28,16 @@
           <a class="navbar-brand" href="#">管理人员平台</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <form class="navbar-form navbar-right">
+          <form class="navbar-form navbar-right" action="/" method="post">
+            {% csrf_token %}
             <div class="form-group">
-              <input type="text" placeholder="用户名" class="form-control">
+              <input name="username" type="text" placeholder="用户名" class="form-control">
             </div>
             <div class="form-group">
-              <input type="password" placeholder="密码" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-success" href="/mainpage">登录</button>
-          </form>
+              <input name="password" type="password" placeholder="密码" class="form-control">
+            </div>           
+            <button name="login" value="1" type="submit" class="btn btn-success">登录</button>
+            <button name="register" value="1" type="submit" class="btn btn-warning">注册</button>
         </div><!--/.navbar-collapse -->
       </div>
     </nav>

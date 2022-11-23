@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'backlogic.apps.BacklogicConfig',
     'HeadNurseBackstage.apps.HeadNurseBackstageConfig',
-    # 'HeadNurseBackstage',
 ]
 
 MIDDLEWARE = [
