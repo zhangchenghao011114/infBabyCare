@@ -138,4 +138,5 @@ USE_TZ = True
 
 STATIC_URL = '/static/' #别名
 STATIC_ROOT = '/code/collected_static'
+IMAGES_DIR = '/code/backlogic/img'
 

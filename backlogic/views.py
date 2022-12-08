@@ -424,6 +424,14 @@ class patientGroups(View):
         #验证病人是否已存在
         listtext = json.loads(request.body)
         print(listtext)
+
+        # files = request.FILES
+        # content = files.get('image',None).read();        
+        # name = listtext['name'] = '.jpg'
+        # path = os.path.join(settings.IMAGES_DIR,name) 
+        # with open(path,'wb') as f:
+        #     f.write(content)   
+            
         try:
             patient_obj = PatientInfo.objects.filter(InpatientNumber = patient_id)
             if patient_obj[0]:
@@ -433,6 +441,7 @@ class patientGroups(View):
             pass
         obj = PatientInfo.objects.create(name=listtext['name'],InpatientNumber=patient_id,
         diagnosis=listtext['diagnosis'],bedNumber=listtext['bedNumber'],admissionDate=listtext['admissionDate'])
+        NurseToPaientInfo.objects.create(nurse_work_permit_number = idnurse,InpatientNumber = patient_id)
         if obj == None :
             returnjson = {'state':'400','message':'add patient failed'}
             return HttpResponse(json.dumps(returnjson))
@@ -463,17 +472,27 @@ class patientGroups(View):
         # 根据传递过来的内容修改病人信息
          #TODO 可修改病人id
         listtext = json.loads(request.body)
+        
         for item in paitentIdList:
             if item == patient_id: # 存在该病人信息
                 patient_obj = PatientInfo.objects.filter(InpatientNumber = item)
                 if listtext['name']:
-                    patient_obj[0].update(name = listtext['name'])
+                    patient_obj.update(name = listtext['name'])
                 if listtext['diagnosis']:
-                    patient_obj[0].update(diagnosis = listtext['diagnosis'])
+                    patient_obj.update(diagnosis = listtext['diagnosis'])
                 if listtext['bedNumber']:
-                    patient_obj[0].update(bedNumber = listtext['bedNumber'])
+                    patient_obj.update(bedNumber = listtext['bedNumber'])
                 if listtext['admissionDate']:
-                    patient_obj[0].update(admissionDate = listtext['admissionDate'])                    
+                    patient_obj.update(admissionDate = listtext['admissionDate'])   
+
+                #     files = request.FILES
+                # if files.get('image'):
+                #     content = files.get('image',None).read();        
+                #     name = patient_obj[0].name + '.jpg'
+                #     path = os.path.join(settings.IMAGES_DIR,name) 
+                #     with open(path,'wb') as f:
+                #         f.write(content)   
+                                
                 return HttpResponse({'state':'200','data':[]})
         returnjson = {'state':'400','message':'No InpatientNumber matches among the patients you manage'}
         return HttpResponse(json.dumps(returnjson))
@@ -502,7 +521,9 @@ class patientGroups(View):
         for item in paitentIdList:
             if item == patient_id: # 存在该病人信息
                 patient_obj = PatientInfo.objects.filter(InpatientNumber = item)
-                patient_obj[0].delete() 
+                patient_obj[0].delete()
+                n2p = NurseToPaientInfo.objects.filter(nurseWorkPermitNumber = idnurse,InpatientNumber = item) 
+                n2p.delete()
                 return HttpResponse({'state':'200','data':[]})
         returnjson = {'state':'400','message':'No InpatientNumber matches among the patients you manage'}
         return HttpResponse(json.dumps(returnjson))
@@ -542,6 +563,7 @@ class patient2nurse(View):
         else:
             returnjson = {'state':'400','message':'登录状态异常,jwt不存在'}
             return HttpResponse(json.dumps(returnjson))
+        
         # # 获取该名护士照顾的所有病人的信息
         # # 验证http请求head中的jwt
         # verification_jwt = request.META['HTTP_LOGINJWT']  #规定jwt存在header的HTTP_LOGINJWT中
@@ -568,6 +590,7 @@ class patient2nurse(View):
         try:
             obj = NurseToPaientInfo.objects.filter(nurseWorkPermitNumber = idnurse)
             if obj[0].nurseWorkPermitNumber:
+                print(obj[0].id)
                 pass
         except IndexError:
             print('错误发生在 patient2nurse line_17\n')
@@ -576,6 +599,7 @@ class patient2nurse(View):
         for item in obj:
             paitentIdList.append(item.InpatientNumber)
         paitentInfoList = []
+        print(paitentIdList)
         for item in paitentIdList:
             try:
                 tempObj = PatientInfo.objects.filter(InpatientNumber = item)

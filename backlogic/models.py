@@ -26,6 +26,7 @@ class PatientInfo(models.Model):
     diagnosis = models.CharField(max_length=45,default=-1)
     bedNumber = models.CharField(max_length=45,default=-1)
     admissionDate = models.CharField(max_length=45,default=-1)
+    photoAddress = models.CharField(max_length=45,default=-1)
 
 #护士管哪些病人,病人和护士是多对多的关系
 class NurseToPaientInfo(models.Model):

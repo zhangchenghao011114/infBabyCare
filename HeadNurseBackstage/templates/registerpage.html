@@ -17,7 +17,7 @@
   <body>
     <a href="/" class="btn btn-lg btn-default">返回</a>
     <div class="container">
-      <form class="form-signin" action="/registerpage" method="post">
+      <!-- <form class="form-signin" action="/registerpage" method="post">
         {% csrf_token %}
         <h2 class="form-signin-heading">欢迎来到护士长管理系统</h2>
         <h5>用户名</h5> 
@@ -26,8 +26,85 @@
         <input type="password" id="inputPassword" class="form-control" placeholder="***" name="password" required>
         <br>
         <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
-      </form>
+      </form> -->
+
+      <div class="form-signin" name="registerform" >
+        <!-- {% csrf_token %} -->
+        <h2 class="form-signin-heading">欢迎来到护士长管理系统</h2>
+        <h5>工作证号</h5> 
+        <input type="NurseWorkPermitNumber" id="inputNurseWorkPermitNumber" class="form-control" placeholder="" name="NurseWorkPermitNumber" required autofocus>
+        <h5>工作证密码</h5> 
+        <input type="NurseWorkPermitPassword" id="inputNurseWorkPermitPassword" class="form-control" placeholder="" name="NurseWorkPermitPassword" required>
+        <h5>护士姓名</h5> 
+        <input type="NurseName" id="inputNurseName" class="form-control" placeholder="" name="NurseName" required> 
+        <h5>用户名</h5> 
+        <input type="username" id="inputUsername" class="form-control" placeholder="" name="username" required>
+        <h5>密码</h5> 
+        <input type="password" id="inputPassword" class="form-control" placeholder="" name="password" required>
+        <br>
+        <button class="btn btn-lg btn-primary btn-block" onclick="register()">注册</button>
+      </div>
 
     </div> <!-- /container -->
   </body>
+  <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+  <script src="../static/js/bootstrap.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="../static/js/ie10-viewport-bug-workaround.js"></script>
+  <!-- axios -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+  <!-- jsrsasign -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/jsrsasign/10.6.0/jsrsasign-all-min.js"></script>
 </html>
+
+<script>
+  // Axios
+  axios.defaults.baseURL = 'http://43.140.211.71:8001/';
+  // register
+  function register(){
+    let NurseWorkPermitNumber = document.getElementById("inputNurseWorkPermitNumber").value;
+    let NurseWorkPermitPassword = document.getElementById("inputNurseWorkPermitPassword").value;
+    let NurseName = document.getElementById("inputNurseName").value;
+    let username = document.getElementById("inputUsername").value;
+    let password = document.getElementById("inputPassword").value;
+    let header = {
+      'typ': 'JWT',
+      'alg': 'HS256'
+    };
+    let payload = {
+      "NurseWorkPermitNumber": NurseWorkPermitNumber,
+      "NurseWorkPermitPassword": NurseWorkPermitPassword,
+      "NurseName": NurseName,
+      "username": username,
+      "password": password
+    };
+    let sHeader = JSON.stringify(header);
+    let sPayload = JSON.stringify(payload);
+    let sJWT = KJUR.jws.JWS.sign("HS256", sHeader, sPayload, {utf8: "紫者，妪也，紫大寿，强宴宾客于迷途家。肴即尽，取陈酒，觞诸宾。宾皆不敢，尽却之。唯天子许，饮三壶，大醉。紫甚欣慰，请起舞悦众宾。众思谢之恐死，苦不敢言。遂舞。笙箫起，笛音生，紫披发旖旎，自思艳绝。舞毕，遽顾问于客。客皆骇然称善。唯天子醉曰：“笑煞人，老妪何惺惺然作处子态!”鞭于庭。"});
+    let dataPack = {register_jwt: sJWT};
+
+    axios.post('registerpage', dataPack)
+    .then(resp => {
+        //清空input
+        document.getElementById("inputNurseWorkPermitNumber").value = "";
+        document.getElementById("inputNurseWorkPermitPassword").value = "";
+        document.getElementById("inputNurseName").value = "";
+        document.getElementById("inputUsername").value = "";
+        document.getElementById("inputPassword").value = "";
+        //注册成功，返回主页面
+        window.location.href = axios.defaults.baseURL;
+    })
+    .catch(resp => {
+      //注册失败,清空input,留在原页面
+      document.getElementById("inputNurseWorkPermitNumber").value = "";
+      document.getElementById("inputNurseWorkPermitPassword").value = "";
+      document.getElementById("inputNurseName").value = "";
+      document.getElementById("inputUsername").value = "";
+      document.getElementById("inputPassword").value = "";
+    });
+  } 
+</script> 

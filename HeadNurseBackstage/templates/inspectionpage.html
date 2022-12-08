@@ -77,17 +77,85 @@
           <!-- search bar -->
           <div class="row">
             <div class="col-lg-6">
-              <form action="/hazardpage" method="post">
+              <!-- <form action="/hazardpage" method="post">
               {% csrf_token %}
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="搜索报告提交时间">
                     <span class="input-group-btn">
                       <button class="btn btn-success" type="submit">新增记录</button>
                     </span>
-                </div><!-- /input-group -->
-              </form>
-            </div><!-- /.col-lg-6 -->
+                </div>
+              </form> -->
+              <div class="input-group">
+                <input type="text" class="form-control" placeholder="搜索报告提交时间">
+                <span class="input-group-btn">
+                  <button id="addRecord" class="btn btn-success">新增记录</button>
+                </span>
+             </div>
+
+            </div>
           </div><!-- /.row -->
+
+          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+          <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="addRecordModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="addNurseModalLabel">新增护士</h4>
+                    </div>
+                    <form class="form-addRecord" action="/inspectionpage" method="post">
+                      {% csrf_token %}
+                      <div class="modal-body">
+                          <h5>护士工作证号</h5> 
+                          <input type="idNurse" class="form-control" placeholder="" name="idNurse" autocomplete="" required autofocus>
+                          <h5>报告提交时间</h5> 
+                          <input type="inspectionDateTime"  class="form-control" placeholder="" name="inspectionDateTime" autocomplete="" required>
+                          <h5>位置</h5> 
+                          <input type="location" class="form-control" placeholder="" name="location" autocomplete="" required>                  
+                          <h5>巡视信息</h5> 
+                          <input type="inspectionInfo" class="form-control" placeholder="" name="inspectionInfo" autocomplete="" required>                       
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary" >提交</button>
+                      </div>
+                    </form>
+                </div>
+            </div>
+          </div>
+          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
+          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+          <div class="modal fade" id="editRecordModal" tabindex="-1" role="dialog" aria-labelledby="editRecordModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                        <h4 class="modal-title" id="editRecordModalLabel">新增护士</h4>
+                    </div>
+                    <form class="form-addRecord" action="/inspectionpage" method="post">
+                      {% csrf_token %}
+                      <div class="modal-body">
+                        <h5>护士工作证号</h5> 
+                        <input id="EditNurseId" type="idNurse" class="form-control" placeholder="" name="idNurse" autocomplete="" required autofocus disabled>
+                        <h5>报告提交时间</h5> 
+                        <input id="EditInspectionDateTime" type="inspectionDateTime"  class="form-control" placeholder="" name="inspectionDateTime" autocomplete="" required disabled>
+                        <h5>位置</h5> 
+                        <input type="location" class="form-control" placeholder="" name="location" autocomplete="" required>                  
+                        <h5>巡视信息</h5> 
+                        <input type="inspectionInfo" class="form-control" placeholder="" name="inspectionInfo" autocomplete="" required>                            
+                      </div>
+                      <div class="modal-footer">
+                        <button class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="submit" class="btn btn-primary" >提交</button>
+                      </div>
+                    </form>
+                </div>
+            </div>
+          </div>
+          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+
 
           <!-- list -->
           <h2 class="sub-header">巡查记录</h2>
@@ -109,11 +177,13 @@
                   <td>{{val.inspectionInfo}}</td>
                   <td>{{val.inspectionDateTime}}</td>
                   <td>
-                    <form action="/hazardpage" method="post">
+                    <!-- <form action="/hazardpage" method="post">
                       {% csrf_token %}
                       <button class="btn btn-primary" name="EditNurse" value="{{val.NurseWorkPermitNumber}}" type="submit">编辑</button>
                       <button class="btn btn-primary btn-danger" name="DeleteNurse" value="{{val.NurseWorkPermitNumber}}" type="submit">删除</button>
-                    </form>
+                    </form> -->
+                    <button id="editRecord{{val.idNurse}}" class="btn btn-primary" name="EditRecord" value="{{val.idNurse}}" onclick="editRecord( '{{val.idNurse}}','{{val.inspectionDateTime}}' )">编辑</button>
+                    <button id="deleteRecord{{val.idNurse}}" class="btn btn-primary btn-danger" name="DeleteRecord" value="{{val.idNurse}}" onclick="deleteRecord('{{val.idNurse}}')">删除</button>
                   </td>
                 </tr>
                 {% endfor %}
@@ -123,6 +193,37 @@
         </div>
       </div>
     </div>
-
   </body>
+    <!-- Bootstrap core JavaScript
+  ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
+  <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
+  <script src="../static/js/bootstrap.min.js"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="../static/js/ie10-viewport-bug-workaround.js"></script>
+  <!-- axios -->
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>  
+  <!-- jsrsasign -->
+  <script src="https://cdn.bootcdn.net/ajax/libs/jsrsasign/10.6.0/jsrsasign-all-min.js"></script>
 </html>
+
+<script>
+  function deleteRecord(id){
+    var deleteRecordButton = document.getElementById("deleteRecord"+id);
+    deleteRecordButton.parentNode.parentNode.remove();
+  }
+
+  //显示新增记录窗口
+  $("#addRecord").click(function () {
+    $('#addRecordModal').modal();
+  });
+
+  //显示编辑记录窗口
+  function editRecord(nurseid,date){
+    $("#EditNurseId").attr("placeholder",nurseid);
+    $("#EditInspectionDateTime").attr("placeholder",date);
+    $('#editRecordModal').modal();
+  }
+
+</script>
