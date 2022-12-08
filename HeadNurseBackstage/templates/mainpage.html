@@ -28,8 +28,8 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
-            <li><a href="/mainpage">首页</a></li>
-            <li><a href="/nursemanagementpage">护士管理</a></li>
+            <li><a href="/mainpage?username="+{{username}}>首页</a></li>
+            <li><a href="/nursemanagementpage?username="+{{username}}>护士管理</a></li>
             <li><a href="/inspectionpage">巡查记录</a></li>
             <li><a href="/hazardpage">隐患记录</a></li>
           </ul>
@@ -37,7 +37,7 @@
             <input type="text" class="form-control" placeholder="Search...">
           </form> -->
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">欢迎,{{username}},{{time}} </a></li>
+            <li><a href="#">欢迎,{{username}}{{time}} </a></li>
           </ul>
           <!-- <form class="navbar-form navbar-right" action="/mainpage" method="post"> -->
           <div class="navbar-form navbar-right" id="logoutform"></form>

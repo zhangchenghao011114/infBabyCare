@@ -28,16 +28,16 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
-            <li><a href="/mainpage">首页</a></li>
-            <li><a href="/nursemanagementpage">护士管理</a></li>
+            <li><a href="/mainpage?username="+{{username}}>首页</a></li>
+            <li><a href="/nursemanagementpage?username="+{{username}}>护士管理</a></li>
             <li><a href="/inspectionpage">巡查记录</a></li>
             <li><a href="/hazardpage">隐患记录</a></li>
           </ul>
           <!-- <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
           </form> -->
-          <!-- <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">欢迎,{{username}},{{time}} </a></li> -->
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">欢迎,{{username}}{{time}} </a></li>
           </ul>
           <!-- <form class="navbar-form navbar-right" action="/mainpage" method="post">
             <button type="submit" class="btn btn-danger">登出</button>
@@ -182,7 +182,7 @@
               </thead>
               <tbody id="nurseinfotable">
                 {% for val in nursedata.values %}
-                <tr id="{{val.NurseWorkPermitNumber}}">
+                <tr id="tr_{{val.NurseWorkPermitNumber}}">
                   <td>{{val.NurseName}}</td>
                   <td>{{val.NurseWorkPermitNumber}}</td>
                   <td>{{val.NurseWorkPermitPassword}}</td>
@@ -246,18 +246,20 @@
       }
     };
     //设置dataPack
-    let dataPack = {"WorkPermitNumber":NurseWorkPermitNumber,"workPermitPassword":NurseWorkPermitPassword,
+    let dataPack = {"WorkPermitNumber":NurseWorkPermitNumber,"WorkPermitPassword":NurseWorkPermitPassword,
           "name":NurseName,"username":username,"password":password};
     //发送post请求
     axios.post('nursemanagementpage', dataPack, config)
     .then(resp => {
-        if(resp.data.data != undefined || 1){
+        if(resp.data.state == "200" || 1){
           //添加成功,修改表格信息
           document.getElementById("add_NurseWorkPermitNumber").value = "";
           document.getElementById("add_EditNurseWorkPermitPassword").value = "";
           document.getElementById("add_NurseName").value = "";
           document.getElementById("add_Username").value = "";
           document.getElementById("add_Password").value = "";
+          //隐藏modal
+          $('#addNurseModal').modal('hide');
           //添加tr
           var tbody = document.getElementById("nurseinfotable");
           var tr =  document.createElement('tr');
@@ -277,21 +279,16 @@
           td2.appendChild(button_delete) 
           tr.appendChild(td1); 
           tr.appendChild(td2); 
-          // 修改属性             TODO:button的onclick属性还没有添加！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！
-          tr.id = NurseWorkPermitNumber;
+          // 修改属性            
+          tr.id = "tr_"+NurseWorkPermitNumber;
           button_edit.id = "editNurse" + NurseWorkPermitNumber;
           button_edit.className = "btn btn-primary";
           button_edit.innerHTML = "编辑";
-          //button_edit.onclick = "editNurse()"
           button_edit.setAttribute('onclick','editNurse()');
           button_delete.id = "deleteNurse" + NurseWorkPermitNumber;
           button_delete.className = "btn btn-primary btn-danger";
           button_delete.innerHTML = "删除";
-          //button_delete.onclick = "deleteNurse()"
           button_delete.setAttribute('onclick','deleteNurse()');
-          //隐藏modal
-          console.log(td1)
-          $('#addNurseModal').modal('hide');
         } 
         else {
           document.getElementById("add_NurseWorkPermitNumber").value = "";
@@ -330,19 +327,18 @@
     //发送post请求
     axios.put('nursemanagementpage?NurseWorkPermitNumber=' + NurseWorkPermitNumber, dataPack, config)
     .then(resp => {
-        console.log(resp.data)
-        if(resp.data != undefined ){
+        //console.log(resp.data.data)
+        if(resp.data.state == "200"){+
           //添加成功,修改表格信息
-          console.log(resp.data)
+          console.log(resp.data.state)
           document.getElementById("edit_NurseName").value = "";
           document.getElementById("edit_Username").value = "";
           document.getElementById("edit_Password").value = "";
-          document.getElementById("NurseWorkPermitNumber")[0].value = NurseName;
-          document.getElementById("NurseWorkPermitNumber")[3].value = username;
-          document.getElementById("NurseWorkPermitNumber")[4].value = password;
           //隐藏modal
-          console.log(resp.data)
           $('#editNurseModal').modal('hide');
+          document.getElementById("tr_"+NurseWorkPermitNumber).children[0].innerHTML = NurseName;
+          document.getElementById("tr_"+NurseWorkPermitNumber).children[3].innerHTML = username;
+          document.getElementById("tr_"+NurseWorkPermitNumber).children[4].innerHTML = password;
         } 
         else {
           //添加失败

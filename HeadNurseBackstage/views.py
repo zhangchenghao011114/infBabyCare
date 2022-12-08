@@ -96,8 +96,12 @@ def registerpage(request):
     
 def mainpage(request):
     if request.method == "GET":
-        username = request.get_full_path().split("?")[1].split("=")[1]
-        timenow = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+        try:
+            username = request.get_full_path().split("?")[1].split("=")[1]
+            username = username+","
+        except:
+            username = ""        
+            timenow = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
         return render(request,"mainpage.html",{"username":username,"time":timenow})
     # elif request.method == "POST":
     #     return redirect("/")
@@ -114,13 +118,29 @@ def nursemanagementpage(request):
                 "username":obj.username,
                 "password":obj.password
             }
-        return render(request,"nursemanagementpage.html",{"nursedata":nursedata})
-        #return render(request,"nursemanagementpage.html",{"nursedata":nursedata})
+        try:
+            username = request.get_full_path().split("?")[1].split("=")[1]
+            username = username+","
+        except:
+            username = ""
+        timenow = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
+        return render(request,"nursemanagementpage.html",{"nursedata":nursedata,"username":username,"time":timenow})
     elif request.method == "POST":
         print(request.method)
-        tmp =  request.POST.get("NurseWorkPermitNumber")
-        print(tmp)
-        return redirect("/nursemanagementpage")
+        listtext = json.loads(request.body)
+        print(listtext)
+        loginjwt = request.META['HTTP_LOGINJWT']  #规定jwt存在header的HTTP_LOGINJWT中
+        print(loginjwt)
+        nurse = NurseInfo.objects.create(name=listtext['name'],username=listtext['username'],password=listtext['password'],
+        workPermitNumber=listtext['workPermitNumber'],workPermitPassword=listtext['workPermitPassword'],login_jwt=loginjwt)
+        if nurse:
+            returnjson = {'state':'200','data':[]}
+            return HttpResponse(json.dumps(returnjson))
+        else:
+            returnjson = {'state':'400','message':'nurse create fail'}
+            print('nursemanage.护士创建失败：')
+            print(returnjson)
+            return HttpResponse(json.dumps(returnjson))
     elif request.method == "PUT":
         qstr = request.META['QUERY_STRING']
         workPermitNumber = qstr[qstr.find('=')+1:]
@@ -133,6 +153,20 @@ def nursemanagementpage(request):
             username = listtext['username']
             password = listtext['password']
             nurse.update(name=name,username=username,password=password)
+            returnjson = {'state':'200','data':[]}
+            return HttpResponse(json.dumps(returnjson))
+        else:
+            returnjson = {'state':'400','message':'no such nurse'}
+            print('nursemanage.护士不存在：')
+            print(returnjson)
+            return HttpResponse(json.dumps(returnjson))
+    elif request.method == "DELETE":
+        qstr = request.META['QUERY_STRING']
+        workPermitNumber = qstr[qstr.find('=')+1:]
+        print('nursemanage:',workPermitNumber)
+        nurse = NurseInfo.objects.filter(workPermitNumber=workPermitNumber)
+        if nurse:
+            nurse.delete()
             returnjson = {'state':'200','data':[]}
             return HttpResponse(json.dumps(returnjson))
         else:
