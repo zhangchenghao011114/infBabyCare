@@ -30,8 +30,8 @@
           <ul class="nav navbar-nav navbar-left">
             <li><a href="/mainpage?username="+{{username}}>首页</a></li>
             <li><a href="/nursemanagementpage?username="+{{username}}>护士管理</a></li>
-            <li><a href="/inspectionpage">巡查记录</a></li>
-            <li><a href="/hazardpage">隐患记录</a></li>
+            <li><a href="/inspectionpage?username="+{{username}}>巡查记录</a></li>
+            <li><a href="/hazardpage?username="+{{username}}>隐患记录</a></li>
           </ul>
           <!-- <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
@@ -122,7 +122,7 @@
                       </div>
                       <div class="modal-footer">
                         <button class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button class="btn btn-primary" onclick="addNurse()"=>提交</button>
+                        <button class="btn btn-primary" onclick="addNurse()">提交</button>
                       </div>
                     </div>
                 </div>
@@ -192,7 +192,7 @@
                     <button id="editNurse{{val.NurseWorkPermitNumber}}" class="btn btn-primary" onclick="showEditNurseForm('{{val.NurseWorkPermitNumber}}','{{val.NurseWorkPermitPassword}}' )">编辑</button>
                   </td>
                   <td>
-                    <button id="deleteNurse{{val.NurseWorkPermitNumber}}" class="btn btn-primary btn-danger" name="DeleteNurse" value="{{val.NurseWorkPermitNumber}}" onclick="deleteNurse({{val.NurseWorkPermitNumber}})">删除</button>
+                    <button id="deleteNurse{{val.NurseWorkPermitNumber}}" class="btn btn-primary btn-danger" name="DeleteNurse" value="{{val.NurseWorkPermitNumber}}" onclick="deleteNurse('{{val.NurseWorkPermitNumber}}')">删除</button>
                   </td>
                 </tr>
                 {% endfor %}
@@ -284,11 +284,15 @@
           button_edit.id = "editNurse" + NurseWorkPermitNumber;
           button_edit.className = "btn btn-primary";
           button_edit.innerHTML = "编辑";
-          button_edit.setAttribute('onclick','editNurse()');
+          button_edit.onclick= showEditNurseForm(NurseWorkPermitNumber,NurseWorkPermitPassword )
+          //button_edit.setAttribute('onclick',"showEditNurseForm('','' )");
+          //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
           button_delete.id = "deleteNurse" + NurseWorkPermitNumber;
           button_delete.className = "btn btn-primary btn-danger";
           button_delete.innerHTML = "删除";
-          button_delete.setAttribute('onclick','deleteNurse()');
+          button_delete.onclick= deleteNurse(NurseWorkPermitNumber)
+          //button_delete.setAttribute('onclick','deleteNurse()');
+          //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         } 
         else {
           document.getElementById("add_NurseWorkPermitNumber").value = "";
@@ -369,10 +373,10 @@
       }
     };
     //发送delete请求
-    axios.delete('nursemanagementpage/' + NurseWorkPermitNumber, config)
+    axios.delete('nursemanagementpage?NurseWorkPermitNumber=' + NurseWorkPermitNumber, config)
     .then(resp => {
-        if(resp.data.data != undefined || 1){
-          var deleteNurseButton = document.getElementById("deleteNurse"+id);
+        if(resp.data.state != "200" || 1){
+          var deleteNurseButton = document.getElementById("deleteNurse"+NurseWorkPermitNumber);
           deleteNurseButton.parentNode.parentNode.remove();
         } 
         else {
