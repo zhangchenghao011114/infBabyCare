@@ -28,16 +28,16 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
-            <li><a href="/mainpage">首页</a></li>
-            <li><a href="/nursemanagementpage">护士管理</a></li>
-            <li><a href="/inspectionpage">巡查记录</a></li>
-            <li><a href="/hazardpage">隐患记录</a></li>
+            <li><a href="/mainpage?username="+{{username}}>首页</a></li>
+            <li><a href="/nursemanagementpage?username="+{{username}}>护士管理</a></li>
+            <li><a href="/inspectionpage?username="+{{username}}>巡查记录</a></li>
+            <li><a href="/hazardpage?username="+{{username}}>隐患记录</a></li>
           </ul>
           <!-- <form class="navbar-form navbar-right">
             <input type="text" class="form-control" placeholder="Search...">
           </form> -->
-          <!-- <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">欢迎,{{username}},{{time}} </a></li> -->
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="#">欢迎,{{username}}{{time}} </a></li>
           </ul>
           <!-- <form class="navbar-form navbar-right" action="/mainpage" method="post">
             <button type="submit" class="btn btn-danger">登出</button>
@@ -104,23 +104,24 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                         <h4 class="modal-title" id="addNurseModalLabel">新增护士</h4>
                     </div>
-                    <form class="form-addRecord" action="/inspectionpage" method="post">
-                      {% csrf_token %}
+                    <!-- <form class="form-addRecord" action="/inspectionpage" method="post"> -->
+                    <div class="form-addRecord" name="addRecordForm">
+                      <!-- {% csrf_token %} -->
                       <div class="modal-body">
                           <h5>护士工作证号</h5> 
-                          <input type="idNurse" class="form-control" placeholder="" name="idNurse" autocomplete="" required autofocus>
+                          <input id="add_idNurse" type="idNurse" class="form-control" placeholder="" name="idNurse"  autofocus>
                           <h5>报告提交时间</h5> 
-                          <input type="inspectionDateTime"  class="form-control" placeholder="" name="inspectionDateTime" autocomplete="" required>
+                          <input id="add_inspectionDateTime" type="inspectionDateTime"  class="form-control" placeholder="" name="inspectionDateTime" >
                           <h5>位置</h5> 
-                          <input type="location" class="form-control" placeholder="" name="location" autocomplete="" required>                  
+                          <input id="add_location" type="location" class="form-control" placeholder="" name="location">                  
                           <h5>巡视信息</h5> 
-                          <input type="inspectionInfo" class="form-control" placeholder="" name="inspectionInfo" autocomplete="" required>                       
+                          <input id="add_inspectionInfo" type="inspectionInfo" class="form-control" placeholder="" name="inspectionInfo"  >                       
                       </div>
                       <div class="modal-footer">
                         <button class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="submit" class="btn btn-primary" >提交</button>
+                        <button class="btn btn-primary" onclick="addRecord()">提交</button>
                       </div>
-                    </form>
+                    </div>
                 </div>
             </div>
           </div>
@@ -132,25 +133,26 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
-                        <h4 class="modal-title" id="editRecordModalLabel">新增护士</h4>
+                        <h4 class="modal-title" id="editRecordModalLabel">编辑护士</h4>
                     </div>
-                    <form class="form-addRecord" action="/inspectionpage" method="post">
-                      {% csrf_token %}
+                    <!-- <form class="form-addRecord" action="/inspectionpage" method="post"> -->
+                    <div class="form-addRecord" name="editRecordForm">
+                      <!-- {% csrf_token %} -->
                       <div class="modal-body">
                         <h5>护士工作证号</h5> 
-                        <input id="EditNurseId" type="idNurse" class="form-control" placeholder="" name="idNurse" autocomplete="" required autofocus disabled>
+                        <input id="EditNurseId" type="idNurse" class="form-control" placeholder="" name="idNurse"  autofocus disabled>
                         <h5>报告提交时间</h5> 
-                        <input id="EditInspectionDateTime" type="inspectionDateTime"  class="form-control" placeholder="" name="inspectionDateTime" autocomplete="" required disabled>
+                        <input id="EditInspectionDateTime" type="inspectionDateTime"  class="form-control" placeholder="" name="inspectionDateTime" disabled>
                         <h5>位置</h5> 
-                        <input type="location" class="form-control" placeholder="" name="location" autocomplete="" required>                  
+                        <input id="edit_location" type="location" class="form-control" placeholder="" name="location"  >                  
                         <h5>巡视信息</h5> 
-                        <input type="inspectionInfo" class="form-control" placeholder="" name="inspectionInfo" autocomplete="" required>                            
+                        <input id="edit_inspectionInfo" type="inspectionInfo" class="form-control" placeholder="" name="inspectionInfo" >                            
                       </div>
                       <div class="modal-footer">
                         <button class="btn btn-default" data-dismiss="modal">关闭</button>
-                        <button type="submit" class="btn btn-primary" >提交</button>
+                        <button class="btn btn-primary" onclick="editRecord()">提交</button>
                       </div>
-                    </form>
+                    </div>
                 </div>
             </div>
           </div>
@@ -167,11 +169,13 @@
                   <th>位置</th>
                   <th>巡视信息</th>
                   <th>报告提交时间</th>
+                  <th>编辑</th>
+                  <th>删除</th>
                 </tr>
               </thead>
-              <tbody>
+              <tbody id="inspectioninfotable">
                 {% for val in inspectiondata.values %}
-                <tr id="{{val.idNurse}}">
+                <tr id="tr_{{val.idNurse}}_{{val.inspectionDateTime}}">
                   <td>{{val.idNurse}}</td>
                   <td>{{val.location}}</td>
                   <td>{{val.inspectionInfo}}</td>
@@ -179,11 +183,13 @@
                   <td>
                     <!-- <form action="/hazardpage" method="post">
                       {% csrf_token %}
-                      <button class="btn btn-primary" name="EditNurse" value="{{val.NurseWorkPermitNumber}}" type="submit">编辑</button>
-                      <button class="btn btn-primary btn-danger" name="DeleteNurse" value="{{val.NurseWorkPermitNumber}}" type="submit">删除</button>
+                      <button class="btn btn-primary" name="EditNurse" value="{{val.NurseworkPermitNumber}}" type="submit">编辑</button>
+                      <button class="btn btn-primary btn-danger" name="DeleteNurse" value="{{val.NurseworkPermitNumber}}" type="submit">删除</button>
                     </form> -->
-                    <button id="editRecord{{val.idNurse}}" class="btn btn-primary" name="EditRecord" value="{{val.idNurse}}" onclick="editRecord( '{{val.idNurse}}','{{val.inspectionDateTime}}' )">编辑</button>
-                    <button id="deleteRecord{{val.idNurse}}" class="btn btn-primary btn-danger" name="DeleteRecord" value="{{val.idNurse}}" onclick="deleteRecord('{{val.idNurse}}')">删除</button>
+                    <button id="editRecord{{val.idNurse}}_{{val.inspectionDateTime}}" class="btn btn-primary" name="EditRecord" value="{{val.idNurse}}" onclick="showEditRecordForm( '{{val.idNurse}}','{{val.inspectionDateTime}}' )">编辑</button>
+                  </td>
+                  <td>  
+                    <button id="deleteRecord{{val.idNurse}}_{{val.inspectionDateTime}}" class="btn btn-primary btn-danger" name="DeleteRecord" value="{{val.idNurse}}" onclick="deleteRecord('{{val.idNurse}}','{{val.inspectionDateTime}}')">删除</button>
                   </td>
                 </tr>
                 {% endfor %}
@@ -220,10 +226,180 @@
   });
 
   //显示编辑记录窗口
-  function editRecord(nurseid,date){
+  function showEditRecordForm(nurseid,date){
     $("#EditNurseId").attr("placeholder",nurseid);
     $("#EditInspectionDateTime").attr("placeholder",date);
     $('#editRecordModal').modal();
   }
+
+  // Axios
+  axios.defaults.baseURL = 'http://43.140.211.71:8001/';
+  // addRecord
+  function addRecord(){
+    let idNurse = document.getElementById("add_idNurse").value;
+    let location = document.getElementById("add_location").value;
+    let inspectionInfo = document.getElementById("add_inspectionInfo").value;
+    let inspectionDateTime = document.getElementById("add_inspectionDateTime").value;
+
+    //判断是否有数据为空
+    if(idNurse == ""||location==""||inspectionInfo==""||inspectionDateTime==""){
+      document.getElementById("add_idNurse").value = "";
+      document.getElementById("add_inspectionDateTime").value = "";
+      document.getElementById("add_location").value = "";
+      document.getElementById("add_inspectionInfo").value = "";   
+      alert("输入不应为空！")
+      return;
+    }
+
+
+    //在header中添加jwt
+    let config = {
+      headers:{
+        loginjwt : localStorage.getItem("jwt")
+      }
+    };
+    //设置dataPack
+    let dataPack = {"idNurse":idNurse,"location":location,
+    "inspectionInfo":inspectionInfo,"inspectionDateTime":inspectionDateTime};
+    //发送post请求
+    axios.post('inspectionpage', dataPack, config)
+    .then(resp => {
+        if(resp.data.state == "200" || 1){
+          //添加成功,修改表格信息
+          document.getElementById("add_idNurse").value = "";
+          document.getElementById("add_inspectionDateTime").value = "";
+          document.getElementById("add_location").value = "";
+          document.getElementById("add_inspectionInfo").value = "";
+          //隐藏modal
+          $('#addRecordModal').modal('hide');
+          //添加tr
+          var tbody = document.getElementById("inspectioninfotable");
+          var tr =  document.createElement('tr');
+          tbody.appendChild(tr);
+          //添加td
+          var datatoadd={"1":idNurse,"2":location,"3":inspectionInfo,"4":inspectionDateTime}
+          for (var k in datatoadd) {
+            var td = document.createElement('td');           
+            tr.appendChild(td);      
+            td.innerHTML = datatoadd[k]
+          }
+          var button_edit = document.createElement('button');
+          var button_delete = document.createElement('button');
+          var td1 = document.createElement('td');
+          var td2 = document.createElement('td');
+          td1.appendChild(button_edit)
+          td2.appendChild(button_delete) 
+          tr.appendChild(td1); 
+          tr.appendChild(td2); 
+          // 修改属性            
+          tr.id = "tr_"+idNurse+"_"+inspectionDateTime;
+          button_edit.id = "editRecord" + idNurse+"_"+inspectionDateTime;
+          button_edit.className = "btn btn-primary";
+          button_edit.innerHTML = "编辑";
+          button_edit.onclick= ()=>showEditRecordForm(idNurse,inspectionDateTime )
+          //button_edit.setAttribute('onclick','editRecord()');
+          button_delete.id = "deleteRecord" + idNurse+"_"+inspectionDateTime;
+          button_delete.className = "btn btn-primary btn-danger";
+          button_delete.innerHTML = "删除";
+          button_delete.onclick= ()=>deleteRecord(idNurse,inspectionDateTime )
+          //button_delete.setAttribute('onclick','deleteRecord()');
+        } 
+        else {
+          document.getElementById("add_idNurse").value = "";
+          document.getElementById("add_inspectionDateTime").value = "";
+          document.getElementById("add_location").value = "";
+          document.getElementById("add_inspectionInfo").value = "";
+        }      
+    })
+    .catch(resp => {
+      //添加失败,清空input,留在原页面
+      document.getElementById("add_idNurse").value = "";
+      document.getElementById("add_inspectionDateTime").value = "";
+      document.getElementById("add_location").value = "";
+      document.getElementById("add_inspectionInfo").value = "";
+    });
+  }
+
+  function editRecord(){
+    let idNurse = document.getElementById("EditNurseId").placeholder;
+    let inspectionDateTime = document.getElementById("EditInspectionDateTime").placeholder;
+    let location = document.getElementById("edit_location").value;
+    let inspectionInfo = document.getElementById("edit_inspectionInfo").value;
+
+    console.log(inspectionDateTime)
+
+    if(location == ""||inspectionInfo==""){
+      document.getElementById("edit_location").value = "";
+      document.getElementById("edit_inspectionInfo").value = "";   
+      alert("输入不应为空！")
+      return;
+    }
+
+    //在header中添加jwt
+    let config = {
+      headers:{
+        loginjwt : localStorage.getItem("jwt")
+      }
+    };
+    //设置dataPack
+    let dataPack = {"location":location,"inspectionInfo":inspectionInfo};
+    //发送post请求
+    axios.put('inspectionpage?idNurse='+idNurse+"&inspectionDateTime="+encodeURIComponent(inspectionDateTime), dataPack, config)
+    .then(resp => {
+        //console.log(resp.data.data)
+        if(resp.data.state == "200" || 1){
+          //添加成功,修改表格信息
+          console.log(resp.data.state)
+          document.getElementById("edit_location").value = "";
+          document.getElementById("edit_inspectionInfo").value = "";
+          //隐藏modal
+          $('#editRecordModal').modal('hide');
+          document.getElementById("tr_"+idNurse+"_"+inspectionDateTime).children[1].innerHTML = location;
+          document.getElementById("tr_"+idNurse+"_"+inspectionDateTime).children[2].innerHTML = inspectionInfo;
+        } 
+        else {
+          //添加失败
+          document.getElementById("edit_location").value = "";
+          document.getElementById("edit_inspectionInfo").value = "";
+        }      
+    })
+    .catch(resp => {
+      //添加失败,清空input,留在原页面
+      document.getElementById("edit_location").value = "";
+      document.getElementById("edit_inspectionInfo").value = "";
+    });
+  }
+
+
+
+
+
+
+  //deleteNurse 
+  function deleteRecord(idNurse,inspectionDateTime){
+    //在header中添加jwt
+    let config = {
+      headers:{
+        loginjwt : localStorage.getItem("jwt")
+      }
+    };
+    //发送delete请求
+    axios.delete('inspectionpage?idNurse='+idNurse+"&inspectionDateTime="+inspectionDateTime, config)
+    .then(resp => {
+        if(resp.data.state != "200" || 1){
+          var deleteRecordButton = document.getElementById("deleteRecord"+idNurse+"_"+inspectionDateTime);
+          deleteRecordButton.parentNode.parentNode.remove();
+        } 
+        else {
+        }      
+    })
+    .catch(resp => {
+    });
+
+  }
+
+
+
+
 
 </script>
