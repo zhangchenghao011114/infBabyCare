@@ -37,7 +37,7 @@ def verify_jwt(token):
     obj = NurseInfo.objects.filter(login_jwt = token)
     try: 
         if obj[0].workPermitNumber:
-            print( obj[0].login_jwt)
+            # print( obj[0].login_jwt)
             return obj[0].workPermitNumber
         else:
             print('工作证号不存在')

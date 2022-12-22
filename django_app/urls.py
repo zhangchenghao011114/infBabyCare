@@ -15,6 +15,7 @@ urlpatterns = [
     path('nursemanagementpage',headnurse_views.nursemanagementpage),       # 护士管理页面
     path('inspectionpage',headnurse_views.inspectionpage),       # 巡查记录页面
     path('hazardpage',headnurse_views.hazardpage),       # 巡查记录页面
+    path('admin/HeadNurseBackstage/headnurseinfo',headnurse_views.headNurseGroups), #护士长管理
     path('test',views.test.as_view()),
     path('login',views.login.as_view()),
     path('register',views.register.as_view()),
@@ -26,5 +27,7 @@ urlpatterns = [
     path('api/hazard',views.hazardGroups.as_view()),
     path('api/inspection',views.inspectionGroups.as_view()),
     path('api/patient2nurse',views.patient2nurse.as_view()),
+    path('api/patient/img/<str:patient_id>',views.upload_patient_image.as_view()),
+    path('api/nurse/img',views.upload_nurse_image.as_view()),
     # path('api/infusion/<str:nurse_id>/',views.infusionGroups.as_view()),
 ]
