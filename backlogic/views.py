@@ -9,21 +9,6 @@ import pytz
 # Create your views here.
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-#前端
-# class homepage(View):     
-#     def get(self,request):
-#         #return HttpResponse("hello")
-#         print("asd\n")
-#         try:
-#             images = os.path.join( os.path.dirname(__file__) , 'static' )
-#             img_path = os.path.join(images , 'css/bootstrap.min.css' )
-#             # print(img_path)
-#             file_one = open(img_path, "rb")
-#         except:
-#             print('fail\n')
-#         return render(request,"homepage.html")
-
-
 
 # 小程序后端
 class test(View):
@@ -107,7 +92,6 @@ class login(View):
 class infusionGroups(View):
     def get(self,request): # 获取这名护士的所有输液记录
         # 验证http请求head中的jwt
-        # print("infusionGroups.get")
         verification_jwt = request.META['HTTP_LOGINJWT']  #规定jwt存在header的HTTP_LOGINJWT中
         idnurse = verify_jwt(verification_jwt)
         if idnurse: 
@@ -172,11 +156,8 @@ class infusionGroups(View):
         print(listtext)
         infusion_obj = InfusionRecords.objects.filter(infusionDateTime = listtext['infusionDateTime']).first()
         if infusion_obj.idNurse == idnurse:
-                # if listtext['idPiercingTools']:
                 infusion_obj.idPiercingTools = listtext['idPiercingTools']
-                # if listtext['idIntravenous']:
                 infusion_obj.idIntravenous = listtext['idIntravenous']
-                # if listtext['idPharmaceuticals']:
                 infusion_obj.idPharmaceuticals = listtext['idPharmaceuticals']
                 infusion_obj.save()
                 print('infusionGroups.put 成功修改')
@@ -273,9 +254,7 @@ class hazardGroups(View):
         print(listtext)
         hazard_obj = HazardReports.objects.filter(hazardDateTime = listtext['hazardDateTime']).first()
         if hazard_obj.idNurse == idnurse:
-                # if listtext['location']:
                 hazard_obj.location = listtext['location']
-                # if listtext['hazardInfo']:
                 hazard_obj.hazardInfo = listtext['hazardInfo']
                 hazard_obj.save()
                 print('hazardGroups.put 成功修改')
@@ -451,15 +430,7 @@ class patientGroups(View):
             return HttpResponse(json.dumps(returnjson))
         #验证病人是否已存在
         listtext = json.loads(request.body)
-        print(listtext)
-
-        # files = request.FILES
-        # content = files.get('image',None).read();        
-        # name = listtext['name'] = '.jpg'
-        # path = os.path.join(settings.IMAGES_DIR,name) 
-        # with open(path,'wb') as f:
-        #     f.write(content)   
-            
+        print(listtext)    
         try:
             patient_obj = PatientInfo.objects.filter(InpatientNumber = patient_id)
             if patient_obj[0]:
@@ -468,18 +439,6 @@ class patientGroups(View):
                 return HttpResponse(json.dumps(returnjson))
         except IndexError:
             pass
-        #获取图片
-        # image_name = 'image'
-        # image = request.FILES.get(image_name)
-
-        # images = os.path.join( os.path.dirname(__file__) , 'img' )
-        # img_path = os.path.join(images , image_name )
-
-        # # 将图片保存到本地
-        # with open(img_path, 'wb') as f:
-        #     for chunk in image.chunks():
-        #         f.write(chunk)
-
         obj = PatientInfo.objects.create(name=listtext['name'],InpatientNumber=patient_id,diagnosis=listtext['diagnosis'],bedNumber=listtext['bedNumber'],admissionDate=listtext['admissionDate'])
         NurseToPaientInfo.objects.create(nurseWorkPermitNumber = idnurse,InpatientNumber = patient_id)
         if obj == None :
@@ -511,31 +470,17 @@ class patientGroups(View):
         for item in obj:
             paitentIdList.append(item.InpatientNumber)
         # 根据传递过来的内容修改病人信息
-         #TODO 可修改病人id
+        #TODO 可修改病人id
         listtext = json.loads(request.body)
         
         for item in paitentIdList:
             if item == patient_id: # 存在该病人信息
                 patient_obj = PatientInfo.objects.filter(InpatientNumber = item).first()
-                # if listtext['name']:
                 patient_obj.name = listtext['name']
-                # if listtext['diagnosis']:
                 patient_obj.diagnosis = listtext['diagnosis']
-                # if listtext['bedNumber']:
                 patient_obj.bedNumber = listtext['bedNumber']
-                # if listtext['admissionDate']:
                 patient_obj.admissionDate = listtext['admissionDate'] 
-                # if listtext['imgPath']:
-                #     patient_obj.photoAddress = listext['imgPath']
-                patient_obj.save()
-                #     files = request.FILES
-                # if files.get('image'):
-                #     content = files.get('image',None).read();        
-                #     name = patient_obj[0].name + '.jpg'
-                #     path = os.path.join(settings.IMAGES_DIR,name) 
-                #     with open(path,'wb') as f:
-                #         f.write(content)   
-                                
+                patient_obj.save()                                
                 return HttpResponse(json.dumps({'state':'200','data':[]}))
         returnjson = {'state':'400','message':'No InpatientNumber matches among the patients you manage'}
         return HttpResponse(json.dumps(returnjson))
@@ -599,6 +544,30 @@ class nurseGroups(View):
             print(returnjson)
             return HttpResponse(json.dumps(returnjson))
 
+def remoteLoginVerification(request):
+    # 获取该名护士照顾的所有病人的信息
+    # 验证http请求head中的jwt
+    verification_jwt = request.META['HTTP_LOGINJWT']  #规定jwt存在header的HTTP_LOGINJWT中
+    print('patient2nurse:')
+    print(verification_jwt)
+
+    # 建议传过来的jwt是否可解码
+    payload = decode_jwt_back(verification_jwt)
+    if payload:
+        pass
+    else:
+        return false
+        # returnjson = {'state':'400','message':'登录状态异常,jwt不存在'}
+        # return HttpResponse(json.dumps(returnjson))
+
+    # 可解码的情况下，判断该jwt是否与数据库中的jwt相同，不同则说明这个jwt是被顶掉的
+    idnurse = verify_jwt(verification_jwt)
+    print(idnurse)
+    if idnurse:
+        return true       
+    else:
+        return false
+
 class patient2nurse(View):
     def get(self,request):# get all patients of this nurse
         print("patient2nurse.get")
@@ -611,28 +580,6 @@ class patient2nurse(View):
             returnjson = {'state':'400','message':'登录状态异常,jwt不存在'}
             return HttpResponse(json.dumps(returnjson))
         
-        # # 获取该名护士照顾的所有病人的信息
-        # # 验证http请求head中的jwt
-        # verification_jwt = request.META['HTTP_LOGINJWT']  #规定jwt存在header的HTTP_LOGINJWT中
-        # print('patient2nurse:')
-        # print(verification_jwt)
-
-        # # 建议传过来的jwt是否可解码
-        # payload = decode_jwt_back(verification_jwt)
-        # if payload:
-        #     pass
-        # else:
-        #     returnjson = {'state':'400','message':'登录状态异常,jwt不存在'}
-        #     return HttpResponse(json.dumps(returnjson))
-
-        # # 可解码的情况下，判断该jwt是否与数据库中的jwt相同，不同则说明这个jwt是被顶掉的
-        # idnurse = verify_jwt(verification_jwt)
-        # print(idnurse)
-        # if idnurse:
-        #     pass
-        # else:
-        #     returnjson = {'state':'400','message':'您的账户在异地登录'}
-        #     return HttpResponse(json.dumps(returnjson))
         # 根据护士id,找出ta照顾的所有病人
         try:
             obj = NurseToPaientInfo.objects.filter(nurseWorkPermitNumber = idnurse)
@@ -675,14 +622,6 @@ class img(View):
         # print(img_path)
         file_one = open(img_path, "rb")
         return HttpResponse(file_one.read(), content_type='image/jpg')
-# # 导入 Django 模块
-# from django.http import HttpResponse
-# from django.shortcuts import render
-# from django.db import models
-
-# # 定义图片上传模型
-# class Image(models.Model):
-#     path = models.CharField(max_length=256)
 
 # 定义图片上传视图函数
 class upload_patient_image(View):
@@ -719,8 +658,6 @@ class upload_patient_image(View):
             return HttpResponse(json.dumps(returnjson))
 
         # 将图片路径存入数据库
-        # image = Image(path = img_path)
-        # image.save()
         for item in paitentIdList:
             if item == patient_id: # 存在该病人信息
                 patient_obj = PatientInfo.objects.filter(InpatientNumber = item).first()
@@ -729,9 +666,6 @@ class upload_patient_image(View):
                 img_path = os.path.join(images_dir , image_name )
                 print('img_path')
                 print(img_path)
-                # if img_path:
-                #     patient_obj.photoAddress = img_path
-                # patient_obj.save()
                 image = files.get('image',None)
                 print('image')
                 print(image)
@@ -743,7 +677,6 @@ class upload_patient_image(View):
                 return HttpResponse(json.dumps(returnjson))
         returnjson = {'state':'400','message':'Image No InpatientNumber matches among the patients you manage'}
         return HttpResponse(json.dumps(returnjson))
-    # return render(request, 'upload_image.html')
 
 class upload_nurse_image(View):
     def post(self,request):
@@ -770,9 +703,6 @@ class upload_nurse_image(View):
         images_dir = os.path.join( os.path.dirname(__file__) , 'img' )
         image_name = 'nurse_' + nurse_obj.workPermitNumber + '.jpg'
         img_path = os.path.join(images_dir , image_name )
-        # if img_path:
-        #     nurse_obj.photoAddress = img_path
-        # nurse_obj.save()
         image = files.get('image',None)
         print('image')
         print(image)
@@ -782,9 +712,6 @@ class upload_nurse_image(View):
                 f.write(chunk)
         returnjson = {'state':'200','data':[]}
         return HttpResponse(json.dumps(returnjson))
-        # returnjson = {'state':'400','message':'Image No InpatientNumber matches among the patients you manage'}
-        # return HttpResponse(json.dumps(returnjson))
-    # return render(request, 'upload_image.html')
 
 class testhtml(View):
     def get(self,request,html_file):     
@@ -792,6 +719,5 @@ class testhtml(View):
         css_path = os.path.join( os.path.dirname(__file__) , 'templates' )
         file_path = os.path.join(css_path , html_file )
         file_one = open(file_path, "rb")
-
         return HttpResponse(file_one.read(), content_type='text/html')
 
