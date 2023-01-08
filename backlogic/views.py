@@ -1,7 +1,6 @@
 from django.shortcuts import render, redirect, HttpResponse
 from backlogic.models import NurseInfo,PatientInfo,InfusionRecords,NurseToPaientInfo,HazardReports,InspectionReports
 from backlogic.jwt import generate_jwt,decode_jwt,verify_jwt,decode_jwt_back
-from backlogic.dataload import wrdb_nurseinfo
 from django.views import View
 import json
 import os
@@ -34,8 +33,8 @@ class test(View):
         # NurseToPaientInfo.objects.create(nurseWorkPermitNumber='114514',InpatientNumber='2020010333')
         # NurseToPaientInfo.objects.create(nurseWorkPermitNumber='114514',InpatientNumber='2020010444')
         # NurseToPaientInfo.objects.create(nurseWorkPermitNumber='114514',InpatientNumber='2020010555')
-        wrdb_nurseinfo('nurseinfo.xlsx')
-        return HttpResponse("丁真测你们码")
+        # wrdb_nurseinfo('nurseinfo.xlsx')
+        return HttpResponse("未使用的接口")
 
 class register(View):
     def post(self,request):
@@ -71,7 +70,7 @@ class register(View):
             returnjson = {'state':'200','data':[]}
             return HttpResponse(json.dumps(returnjson))
     def get(self,request):
-            return HttpResponse("丁真测你们码")
+            return HttpResponse("未使用的接口")
 
 class login(View):
     def post(self,request):
@@ -103,7 +102,7 @@ class login(View):
         returnjson = {'state':'200','data':returnjwtList}
         return HttpResponse(json.dumps(returnjson))
     def get(self,request):
-        return HttpResponse("丁真测你们码")
+        return HttpResponse("未使用的接口")
 
 class infusionGroups(View):
     def get(self,request): # 获取这名护士的所有输液记录
