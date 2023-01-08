@@ -27,6 +27,7 @@ urlpatterns = [
     path('api/hazard',views.hazardGroups.as_view()),
     path('api/inspection',views.inspectionGroups.as_view()),
     path('api/patient2nurse',views.patient2nurse.as_view()),
+    path('api/patient/infusion/<str:patient_id>',views.patientinfusionGroups.as_view()),
     path('api/patient/img/<str:patient_id>',views.upload_patient_image.as_view()),
     path('api/nurse/img',views.upload_nurse_image.as_view()),
     # path('api/infusion/<str:nurse_id>/',views.infusionGroups.as_view()),

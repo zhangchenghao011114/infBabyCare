@@ -186,6 +186,35 @@ class infusionGroups(View):
         returnjson = {'state':'400','message':'这个输液记录不存在啊'}
         return HttpResponse(json.dumps(returnjson))
 
+class patientinfusionGroups(View):
+    def get(self,request,patient_id): # 获取这名病人的所有输液记录
+        # 验证http请求head中的jwt
+        verification_jwt = request.META['HTTP_LOGINJWT']  #规定jwt存在header的HTTP_LOGINJWT中
+        idnurse = verify_jwt(verification_jwt)
+        if idnurse: 
+            pass
+        else:
+            returnjson = {'state':'400','message':'登录状态异常,jwt不存在'}
+            return HttpResponse(json.dumps(returnjson))
+        
+        # 根据病人id查找输液记录
+        obj = InfusionRecords.objects.filter(idPatient = patient_id)
+        InfusionRecordList = []
+        for item in obj:
+            if item.infusionDateTime: # 存在该输液记录
+                recordjson = {}
+                recordjson['idPatient'] = item.idPatient
+                recordjson['idPharmaceuticals'] = item.idPharmaceuticals
+                recordjson['idPiercingTools'] = item.idPiercingTools
+                recordjson['idIntravenous'] = item.idIntravenous
+                recordjson['infusionDateTime'] = item.infusionDateTime
+                recordjson['idNurse'] = item.idNurse
+                InfusionRecordList.append(recordjson)
+        print('infusionGroups.get.这名病人的所有输液记录:')
+        print(InfusionRecordList)
+        returnjson = {'state':'200','data':InfusionRecordList}
+        return HttpResponse(json.dumps(returnjson))
+
 class hazardGroups(View):
     def get(self,request): # 获取这名护士隐患报告
         print("hazardGroups.get")
@@ -435,6 +464,11 @@ class patientGroups(View):
             patient_obj = PatientInfo.objects.filter(InpatientNumber = patient_id)
             if patient_obj[0]:
                 returnjson = {'state':'400','message':'patient is already exist'}
+                print(returnjson)
+                return HttpResponse(json.dumps(returnjson))
+            patient_obj_bed = PatientInfo.objects.filter(bedNumber = listtext['bedNumber'])
+            if patient_obj_bed[0]:
+                returnjson = {'state':'400','message':'patient bedNumber is already exist'}
                 print(returnjson)
                 return HttpResponse(json.dumps(returnjson))
         except IndexError:
