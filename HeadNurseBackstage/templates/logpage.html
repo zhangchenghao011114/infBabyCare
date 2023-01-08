@@ -25,12 +25,10 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">管理人员平台</a>
+          <a class="navbar-brand" href="#">InfBabyCare</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <!-- <div class="navbar-form navbar-right" action="/" method="post"> -->
           <div class="navbar-form navbar-right" name="signform">  
-            <!-- {% csrf_token %} -->
             <div class="form-group">
               <input id="inputUsername" name="username" type="text" placeholder="用户名" class="form-control">
             </div>
@@ -40,47 +38,66 @@
             <button name="login" class="btn btn-success" onclick="login()">登录</button>
             <button name="register" class="btn btn-warning" onclick="register()">注册</button>
           </div>
-        </div><!--/.navbar-collapse -->
+        </div
       </div>
     </nav>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <div class="jumbotron">
-      <div class="container">
-        <h1>公告</h1>
-        <p>今天新增病患3人</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">详情&raquo;</a></p>
+    <!-- Carousel
+    ================================================== -->
+    <div id="myCarousel" class="carousel slide" data-ride="carousel">
+      <!-- Indicators -->
+      <ol class="carousel-indicators">
+        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+        <li data-target="#myCarousel" data-slide-to="1"></li>
+        <li data-target="#myCarousel" data-slide-to="2"></li>
+      </ol>
+      <div class="carousel-inner" role="listbox">
+        <div class="item active">
+          <img class="first-slide" src="https://pic1.zhimg.com/80/v2-6943c236cc47230c547ab69c17fdf865_1440w.jpeg" alt="First slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>住院部2栋今日完成装修</h1>
+              <p>12月10日19：00，我院住院部2栋正式完成装修，预计将于明年1月投入使用</p>
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img class="second-slide" src="{% static 'img/logpage_bg_1.png' %}" alt="Second slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>“天使之旅-贵州先心病患儿筛查救助行动”圆满成功</h1>
+              <p>我院与中国红十字基金会联合开展“天使之旅-贵州先心病患儿筛查救助行动”，筛选出73名符合手术指征的患儿，第一批17名患儿已完成手术。</p>
+              <!-- <p><a class="btn btn-lg btn-primary" href="#" role="button">Learn more</a></p> -->
+            </div>
+          </div>
+        </div>
+        <div class="item">
+          <img class="third-slide" src="{% static 'img/logpage_bg_2.png' %}" alt="Third slide">
+          <div class="container">
+            <div class="carousel-caption">
+              <h1>患者家属向我院张医生团队致以感谢</h1>
+              <p>12月15日，一名3岁患儿在我院张医生团队长达1个月的努力下，最终完成白血病二期手术，患者家属向张医生团队致以感谢</p>
+            </div>
+          </div>
+        </div>
       </div>
-    </div>
+      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
+        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
+        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+        <span class="sr-only">Next</span>
+      </a>
+    </div><!-- /.carousel -->
 
     <div class="container">
-      <!-- Example row of columns -->
-      <div class="row">
-        <div class="col-md-4">
-          <h2>内容1</h2>
-          <p>你好 </p>
-          <p><a class="btn btn-default" href="#" role="button">详情&raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>内容2</h2>
-          <p>你好</p>
-          <p><a class="btn btn-default" href="#" role="button">详情&raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>内容3</h2>
-          <p>你好</p>
-          <p><a class="btn btn-default" href="#" role="button">详情&raquo;</a></p>
-        </div>
-      </div>
-      <hr>
       <footer>
-        <p>&copy; 医院管理系统.</p>
+        <p>&copy; InfBabyCare.</p>
       </footer>
     </div> <!-- /container -->
   </body>
-  <!-- Bootstrap core JavaScript
-  ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
+
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
   <script src="../static/js/bootstrap.min.js"></script>
@@ -119,26 +136,23 @@
 
     axios.post('', dataPack)
     .then(resp => {
-        console.log(resp.data)
-        if(resp.data.data != undefined && resp.data.data[0].jwt != ""){
+        if(resp.data.state == 200 && resp.data.data[0].jwt != ""){
           localStorage.setItem("jwt",resp.data.data[0].jwt);
-          console.log("登录成功，jwt成功保存至本地:",resp.data.data[0].jwt)
           //登录成功，跳转至主页面
-          window.location.href = axios.defaults.baseURL + "mainpage?username="+username;
+          window.location.href = axios.defaults.baseURL + "mainpage?username="+username + "&jwt=" + resp.data.data[0].jwt;
         } 
         else {
           //登录失败,清空input,留在原页面
-          console.log("登录失败")
           document.getElementById("inputUsername").value = "";
           document.getElementById("inputPassword").value = "";
+          alert("登录失败")
         }      
     })
     .catch(resp => {
       //出现错误,清空input,留在原页面
-      console.log("出现错误")
-      console.log(resp)
       document.getElementById("inputUsername").value = "";
       document.getElementById("inputPassword").value = "";
+      alert("登录失败")
     });
   } 
 </script> 

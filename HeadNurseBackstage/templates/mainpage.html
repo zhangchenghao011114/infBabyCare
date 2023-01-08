@@ -24,112 +24,53 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">主页</a>
+          <a class="navbar-brand" href="#">首页</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
-            <li><a href="/mainpage?username="+{{username}}>首页</a></li>
-            <li><a href="/nursemanagementpage?username="+{{username}}>护士管理</a></li>
-            <li><a href="/inspectionpage">巡查记录</a></li>
-            <li><a href="/hazardpage">隐患记录</a></li>
+            <li><a id="jumptomainpage" href="#">首页</a></li>
+            <li><a id="jumptonursemanagementpage" href="#">护士管理</a></li>
+            <li><a id="jumptoinspectionpage" href="#">巡查记录</a></li>
+            <li><a id="jumptohazardpage" href="#">隐患记录</a></li>
           </ul>
-          <!-- <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form> -->
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">欢迎,{{username}}{{time}} </a></li>
+            <li><a href="#">欢迎,{{username}},{{time}} </a></li>
           </ul>
-          <!-- <form class="navbar-form navbar-right" action="/mainpage" method="post"> -->
           <div class="navbar-form navbar-right" id="logoutform"></form>
-            <!-- {% csrf_token %} -->
             <button name="logout" class="btn btn-danger" onclick="logout()">登出</button>
           </div>
-          <!-- </form> -->
         </div>
       </div>
     </nav>
 
-    <div class="container-fluid">
+    <div class="container">
       <div class="row">
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-            <li><a href="">More navigation</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-          </ul>
-        </div>
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-          <h1 class="page-header">Dashboard</h1>
+          <h1 class="page-header">首页</h1>
 
-          <div class="row placeholders">
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
+          <!-- Carousel
+          ================================================== -->
+          <div id="myCarousel" class="carousel slide" data-ride="carousel">
+            <!-- Indicators -->
+            <ol class="carousel-indicators">
+              <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+            </ol>
+            <div class="carousel-inner" role="listbox">
+              <div class="item active">
+                <img class="first-slide" src="https://pic1.zhimg.com/80/v2-6943c236cc47230c547ab69c17fdf865_1440w.jpeg" alt="First slide">
+                <div class="container">
+                  <div class="carousel-caption">
+                    <h1>住院部2栋今日完成装修</h1>
+                    <p>12月10日19：00，我院住院部2栋正式完成装修，预计将于明年1月投入使用</p>
+                  </div>
+                </div>
+              </div>
             </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-            <div class="col-xs-6 col-sm-3 placeholder">
-              <img src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" width="200" height="200" class="img-responsive" alt="Generic placeholder thumbnail">
-              <h4>Label</h4>
-              <span class="text-muted">Something else</span>
-            </div>
-          </div>
+          </div><!-- /.carousel -->
 
-          <h2 class="sub-header">Section title</h2>
-          <div class="table-responsive">
-            <table class="table table-striped">
-              <thead>
-                <tr>
-                  <th>#</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                  <th>Header</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>1,001</td>
-                  <td>Lorem</td>
-                  <td>ipsum</td>
-                  <td>dolor</td>
-                  <td>sit</td>
-                </tr>
-                <tr>
-                  <td>1,002</td>
-                  <td>amet</td>
-                  <td>consectetur</td>
-                  <td>adipiscing</td>
-                  <td>elit</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
         </div>
-      </div>
     </div>
+
   </body>
   <!-- Bootstrap core JavaScript
   ================================================== -->
@@ -146,7 +87,13 @@
 </html>
 
 <script>
-  axios.defaults.baseURL = 'http://43.140.211.71:8001/'
+
+  $("#jumptomainpage").attr("href","/mainpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
+  $("#jumptonursemanagementpage").attr("href","/nursemanagementpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
+  $("#jumptoinspectionpage").attr("href","/inspectionpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
+  $("#jumptohazardpage").attr("href","/hazardpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
+
+  axios.defaults.baseURL = 'http://43.140.211.71:8001/';
   //logout
   function logout(){
     window.location.href = axios.defaults.baseURL ;

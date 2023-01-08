@@ -4,6 +4,6 @@ __pycache__/
 mysql/
 .DS_Store
 db.sqlite3
-.env
 venv/
 backlogic123/
+*.jpg

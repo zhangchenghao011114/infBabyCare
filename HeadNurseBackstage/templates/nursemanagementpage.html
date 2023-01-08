@@ -24,80 +24,56 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a class="navbar-brand" href="#">主页</a>
+          <a class="navbar-brand" href="#">护士管理</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
           <ul class="nav navbar-nav navbar-left">
-            <li><a href="/mainpage?username="+{{username}}>首页</a></li>
-            <li><a href="/nursemanagementpage?username="+{{username}}>护士管理</a></li>
-            <li><a href="/inspectionpage?username="+{{username}}>巡查记录</a></li>
-            <li><a href="/hazardpage?username="+{{username}}>隐患记录</a></li>
+            <li><a id="jumptomainpage" href="#">首页</a></li>
+            <li><a id="jumptonursemanagementpage" href="#">护士管理</a></li>
+            <li><a id="jumptoinspectionpage" href="#">巡查记录</a></li>
+            <li><a id="jumptohazardpage" href="#">隐患记录</a></li>
           </ul>
-          <!-- <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form> -->
           <ul class="nav navbar-nav navbar-right">
-            <li><a href="#">欢迎,{{username}}{{time}} </a></li>
+            <li><a href="#">欢迎,{{username}},{{time}} </a></li>
           </ul>
-          <!-- <form class="navbar-form navbar-right" action="/mainpage" method="post">
-            <button type="submit" class="btn btn-danger">登出</button>
-          </form> -->
         </div>
       </div>
     </nav>
 
     <div class="container-fluid">
       <div class="row">
-        <!-- sidebar -->
-        <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-            <li><a href="">More navigation</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-          </ul>
-        </div>
 
         <!-- main -->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">护士管理</h1>
 
-          <!-- search bar -->
           <div class="row">
             <div class="col-lg-6">
-              <!-- <form action="/nursemanagementpage" method="post">
-                {% csrf_token %}
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="搜索姓名/工作证号">
-                    <span class="input-group-btn">
-                      <button id="addNurse" class="btn btn-success" type="submit" >新增护士</button>
-                    </span>
-                </div>
-              </form> -->
-
               <div class="input-group">
-                  <input type="text" class="form-control" placeholder="搜索姓名/工作证号">
+                  <input type="text" class="form-control" >
                   <span class="input-group-btn">
-                    <button id="addNurse" class="btn btn-success"">新增护士</button>
+                    <button id="addNurse" class="btn btn-success" >新增护士</button>
                   </span>
               </div><!-- /input-group -->
 
             </div><!-- /.col-lg-6 -->
           </div><!-- /.row -->
 
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
+          <div class="modal fade" id="confirmDeleteNurseModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteNurseModalLabel">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
+                        <h4 class="modal-title">该操作不可撤销，您确定要继续吗？</h4>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-default" data-dismiss="modal">关闭</button>
+                      <button class="btn btn-primary" id="confirmDeleteButton" ">确认</button>
+                    </div>
+                </div>
+            </div>
+          </div>
+
           <div class="modal fade" id="addNurseModal" tabindex="-1" role="dialog" aria-labelledby="addNurseModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -105,14 +81,12 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                         <h4 class="modal-title" id="addNurseModalLabel">新增护士</h4>
                     </div>
-                    <!-- <form class="form-addNurse" action="/nursemanagementpage" method="post"> -->
                     <div class="form-addNurse" name="addNurseForm">  
-                      <!-- {% csrf_token %} -->
                       <div class="modal-body">
                           <h5>工作证号</h5> 
-                          <input id="add_NurseWorkPermitNumber" type="NurseWorkPermitNumber" class="form-control" placeholder="***" name="NurseWorkPermitNumber" autocomplete="" required autofocus>
+                          <input id="add_NurseworkPermitNumber" type="NurseworkPermitNumber" class="form-control" placeholder="***" name="NurseworkPermitNumber" autocomplete="" required autofocus>
                           <h5>工作证密码</h5> 
-                          <input id="add_EditNurseWorkPermitPassword" type="NurseWorkPermitPassword"  class="form-control" placeholder="***" name="NurseWorkPermitPassword" autocomplete="" required>
+                          <input id="add_EditNurseworkPermitPassword" type="NurseworkPermitPassword"  class="form-control" placeholder="***" name="NurseworkPermitPassword" autocomplete="" required>
                           <h5>护士姓名</h5> 
                           <input id="add_NurseName" type="NurseName" class="form-control" placeholder="张三" name="NurseName" autocomplete="" required>                  
                           <h5>用户名</h5> 
@@ -128,9 +102,7 @@
                 </div>
             </div>
           </div>
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
           <div class="modal fade" id="editNurseModal" tabindex="-1" role="dialog" aria-labelledby="editNurseModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -138,14 +110,12 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                         <h4 class="modal-title" id="editNurseModalLabel">编辑护士</h4>
                     </div>
-                    <!-- <div class="form-addNurse" action="/nursemanagementpage" method="post"> -->
                     <div class="form-editNurse" name="editNurseForm">  
-                      <!-- {% csrf_token %} -->
                       <div class="modal-body">
                           <h5>工作证号</h5> 
-                          <input id="EditNurseWorkPermitNumber" type="NurseWorkPermitNumber" class="form-control" placeholder="工作证号" name="NurseWorkPermitNumber" disabled>
+                          <input id="EditNurseworkPermitNumber" type="NurseworkPermitNumber" class="form-control" placeholder="工作证号" name="NurseworkPermitNumber" disabled>
                           <h5>工作证密码</h5> 
-                          <input id="EditNurseWorkPermitPassword" type="NurseWorkPermitPassword"  class="form-control" placeholder="工作" name="NurseWorkPermitPassword" disabled>
+                          <input id="EditNurseworkPermitPassword" type="NurseworkPermitPassword"  class="form-control" placeholder="工作" name="NurseworkPermitPassword" disabled>
                           <h5>护士姓名</h5> 
                           <input id="edit_NurseName" type="NurseName" class="form-control" placeholder="张三" name="NurseName" autocomplete="" required autofocus>
                           <h5>用户名</h5> 
@@ -161,9 +131,6 @@
                 </div>
             </div>
           </div>
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-
-
 
           <!-- list -->
           <h2 class="sub-header">护士管理</h2>
@@ -182,17 +149,17 @@
               </thead>
               <tbody id="nurseinfotable">
                 {% for val in nursedata.values %}
-                <tr id="tr_{{val.NurseWorkPermitNumber}}">
+                <tr id="tr_{{val.NurseworkPermitNumber}}">
                   <td>{{val.NurseName}}</td>
-                  <td>{{val.NurseWorkPermitNumber}}</td>
-                  <td>{{val.NurseWorkPermitPassword}}</td>
+                  <td>{{val.NurseworkPermitNumber}}</td>
+                  <td>{{val.NurseworkPermitPassword}}</td>
                   <td>{{val.username}}</td>
                   <td>{{val.password}}</td>
                   <td>
-                    <button id="editNurse{{val.NurseWorkPermitNumber}}" class="btn btn-primary" onclick="showEditNurseForm('{{val.NurseWorkPermitNumber}}','{{val.NurseWorkPermitPassword}}' )">编辑</button>
+                    <button id="editNurse{{val.NurseworkPermitNumber}}" class="btn btn-primary" onclick="showEditNurseForm('{{val.NurseworkPermitNumber}}','{{val.NurseworkPermitPassword}}' )">编辑</button>
                   </td>
                   <td>
-                    <button id="deleteNurse{{val.NurseWorkPermitNumber}}" class="btn btn-primary btn-danger" name="DeleteNurse" value="{{val.NurseWorkPermitNumber}}" onclick="deleteNurse('{{val.NurseWorkPermitNumber}}')">删除</button>
+                    <button id="deleteNurse{{val.NurseworkPermitNumber}}" class="btn btn-primary btn-danger" name="DeleteNurse" value="{{val.NurseworkPermitNumber}}" onclick="deleteNurse('{{val.NurseworkPermitNumber}}')">删除</button>
                   </td>
                 </tr>
                 {% endfor %}
@@ -219,26 +186,42 @@
 
 
 <script>
+  $("#jumptomainpage").attr("href","/mainpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
+  $("#jumptonursemanagementpage").attr("href","/nursemanagementpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
+  $("#jumptoinspectionpage").attr("href","/inspectionpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
+  $("#jumptohazardpage").attr("href","/hazardpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
+
   //显示新增护士窗口
   $("#addNurse").click(function () {
     $('#addNurseModal').modal();
   });
   //显示编辑护士窗口
   function showEditNurseForm(number,password){
-    $("#EditNurseWorkPermitNumber").attr("placeholder",number);
-    $("#EditNurseWorkPermitPassword").attr("placeholder",password);
+    $("#EditNurseworkPermitNumber").attr("placeholder",number);
+    $("#EditNurseworkPermitPassword").attr("placeholder",password);
     $('#editNurseModal').modal();
   }
   // Axios
   axios.defaults.baseURL = 'http://43.140.211.71:8001/';
   // addNurse
   function addNurse(){
-    let NurseWorkPermitNumber = document.getElementById("add_NurseWorkPermitNumber").value;
-    let NurseWorkPermitPassword = document.getElementById("add_EditNurseWorkPermitPassword").value;
+    let NurseworkPermitNumber = document.getElementById("add_NurseworkPermitNumber").value;
+    let NurseworkPermitPassword = document.getElementById("add_EditNurseworkPermitPassword").value;
     let NurseName = document.getElementById("add_NurseName").value;
     let username = document.getElementById("add_Username").value;
     let password = document.getElementById("add_Password").value;
 
+    //判断是否有数据为空
+    if(NurseworkPermitNumber == ""||NurseworkPermitPassword==""||NurseName==""||username==""||password==""){
+      document.getElementById("add_NurseworkPermitNumber").value = "";
+      document.getElementById("add_EditNurseworkPermitPassword").value = "";
+      document.getElementById("add_NurseName").value = "";
+      document.getElementById("add_Username").value = "";
+      document.getElementById("add_Password").value = "";      
+      alert("输入不应为空！")
+      return;
+    }
+      
     //在header中添加jwt
     let config = {
       headers:{
@@ -246,15 +229,15 @@
       }
     };
     //设置dataPack
-    let dataPack = {"WorkPermitNumber":NurseWorkPermitNumber,"WorkPermitPassword":NurseWorkPermitPassword,
+    let dataPack = {"workPermitNumber":NurseworkPermitNumber,"workPermitPassword":NurseworkPermitPassword,
           "name":NurseName,"username":username,"password":password};
     //发送post请求
     axios.post('nursemanagementpage', dataPack, config)
     .then(resp => {
-        if(resp.data.state == "200" || 1){
+        if(resp.data.state == "200"){
           //添加成功,修改表格信息
-          document.getElementById("add_NurseWorkPermitNumber").value = "";
-          document.getElementById("add_EditNurseWorkPermitPassword").value = "";
+          document.getElementById("add_NurseworkPermitNumber").value = "";
+          document.getElementById("add_EditNurseworkPermitPassword").value = "";
           document.getElementById("add_NurseName").value = "";
           document.getElementById("add_Username").value = "";
           document.getElementById("add_Password").value = "";
@@ -265,7 +248,7 @@
           var tr =  document.createElement('tr');
           tbody.appendChild(tr);
           //添加td
-          var datatoadd={"1":NurseWorkPermitNumber,"2":NurseWorkPermitPassword,"3":NurseName,"4":username,"5":password}
+          var datatoadd={"1":NurseName,"2":NurseworkPermitNumber,"3":NurseworkPermitPassword,"4":username,"5":password}
           for (var k in datatoadd) {
             var td = document.createElement('td');           
             tr.appendChild(td);      
@@ -280,45 +263,51 @@
           tr.appendChild(td1); 
           tr.appendChild(td2); 
           // 修改属性            
-          tr.id = "tr_"+NurseWorkPermitNumber;
-          button_edit.id = "editNurse" + NurseWorkPermitNumber;
+          tr.id = "tr_"+NurseworkPermitNumber;
+          button_edit.id = "editNurse" + NurseworkPermitNumber;
           button_edit.className = "btn btn-primary";
           button_edit.innerHTML = "编辑";
-          button_edit.onclick= showEditNurseForm(NurseWorkPermitNumber,NurseWorkPermitPassword )
-          //button_edit.setAttribute('onclick',"showEditNurseForm('','' )");
-          //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-          button_delete.id = "deleteNurse" + NurseWorkPermitNumber;
+          button_edit.onclick= ()=>showEditNurseForm(NurseworkPermitNumber,NurseworkPermitPassword )
+          button_delete.id = "deleteNurse" + NurseworkPermitNumber;
           button_delete.className = "btn btn-primary btn-danger";
           button_delete.innerHTML = "删除";
-          button_delete.onclick= deleteNurse(NurseWorkPermitNumber)
-          //button_delete.setAttribute('onclick','deleteNurse()');
-          //TODO!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+          button_delete.onclick= ()=>deleteNurse(NurseworkPermitNumber)
         } 
         else {
-          document.getElementById("add_NurseWorkPermitNumber").value = "";
-          document.getElementById("add_EditNurseWorkPermitPassword").value = "";
+          document.getElementById("add_NurseworkPermitNumber").value = "";
+          document.getElementById("add_EditNurseworkPermitPassword").value = "";
           document.getElementById("add_NurseName").value = "";
           document.getElementById("add_Username").value = "";
           document.getElementById("add_Password").value = "";
+          alert("添加失败!")
         }      
     })
     .catch(resp => {
       //添加失败,清空input,留在原页面
-      document.getElementById("add_NurseWorkPermitNumber").value = "";
-      document.getElementById("add_EditNurseWorkPermitPassword").value = "";
+      document.getElementById("add_NurseworkPermitNumber").value = "";
+      document.getElementById("add_EditNurseworkPermitPassword").value = "";
       document.getElementById("add_NurseName").value = "";
       document.getElementById("add_Username").value = "";
       document.getElementById("add_Password").value = "";
+      alert("添加失败!")
     });
   }
 
-  // editNurse  TODO!!!!!!!!!!!!!1
 
   function editNurse(){
-    let NurseWorkPermitNumber = document.getElementById("EditNurseWorkPermitNumber").placeholder;
+    let NurseworkPermitNumber = document.getElementById("EditNurseworkPermitNumber").placeholder;
     let NurseName = document.getElementById("edit_NurseName").value;
     let username = document.getElementById("edit_Username").value;
     let password = document.getElementById("edit_Password").value;
+
+    //判断是否有数据为空
+    if(NurseName==""||username==""||password==""){
+      document.getElementById("edit_NurseName").value = "";
+      document.getElementById("edit_Username").value = "";
+      document.getElementById("edit_Password").value = "";   
+      alert("输入不应为空！")
+      return;
+    }
 
     //在header中添加jwt
     let config = {
@@ -329,43 +318,39 @@
     //设置dataPack
     let dataPack = {"name":NurseName,"username":username,"password":password};
     //发送post请求
-    axios.put('nursemanagementpage?NurseWorkPermitNumber=' + NurseWorkPermitNumber, dataPack, config)
+    axios.put('nursemanagementpage?NurseworkPermitNumber=' + NurseworkPermitNumber, dataPack, config)
     .then(resp => {
-        //console.log(resp.data.data)
-        if(resp.data.state == "200"){+
-          //添加成功,修改表格信息
-          console.log(resp.data.state)
+        if(resp.data.state == "200"){
+          //编辑成功,修改表格信息
           document.getElementById("edit_NurseName").value = "";
           document.getElementById("edit_Username").value = "";
           document.getElementById("edit_Password").value = "";
           //隐藏modal
           $('#editNurseModal').modal('hide');
-          document.getElementById("tr_"+NurseWorkPermitNumber).children[0].innerHTML = NurseName;
-          document.getElementById("tr_"+NurseWorkPermitNumber).children[3].innerHTML = username;
-          document.getElementById("tr_"+NurseWorkPermitNumber).children[4].innerHTML = password;
+          document.getElementById("tr_"+NurseworkPermitNumber).children[0].innerHTML = NurseName;
+          document.getElementById("tr_"+NurseworkPermitNumber).children[3].innerHTML = username;
+          document.getElementById("tr_"+NurseworkPermitNumber).children[4].innerHTML = password;
         } 
         else {
-          //添加失败
+          //编辑失败
           document.getElementById("edit_NurseName").value = "";
           document.getElementById("edit_Username").value = "";
           document.getElementById("edit_Password").value = "";
+          alert("修改失败!")
         }      
     })
     .catch(resp => {
-      //添加失败,清空input,留在原页面
+      //修改失败,清空input,留在原页面
       document.getElementById("edit_NurseName").value = "";
       document.getElementById("edit_Username").value = "";
       document.getElementById("edit_Password").value = "";
+      alert("修改失败!")
     });
   }
 
-
-
-
-
-
   //deleteNurse 
-  function deleteNurse(NurseWorkPermitNumber){
+  function confirmDeleteNurse(NurseworkPermitNumber){
+    $('#confirmDeleteNurseModal').modal('hide');
     //在header中添加jwt
     let config = {
       headers:{
@@ -373,10 +358,10 @@
       }
     };
     //发送delete请求
-    axios.delete('nursemanagementpage?NurseWorkPermitNumber=' + NurseWorkPermitNumber, config)
+    axios.delete('nursemanagementpage?NurseworkPermitNumber=' + NurseworkPermitNumber, config)
     .then(resp => {
-        if(resp.data.state != "200" || 1){
-          var deleteNurseButton = document.getElementById("deleteNurse"+NurseWorkPermitNumber);
+        if(resp.data.state == "200"){
+          var deleteNurseButton = document.getElementById("deleteNurse"+NurseworkPermitNumber);
           deleteNurseButton.parentNode.parentNode.remove();
         } 
         else {
@@ -384,8 +369,11 @@
     })
     .catch(resp => {
     });
-
   }
 
+  function deleteNurse(NurseworkPermitNumber){
+    $('#confirmDeleteNurseModal').modal();
+    document.getElementById("confirmDeleteButton").onclick = ()=>confirmDeleteNurse(NurseworkPermitNumber);
+  }
 
 </script>

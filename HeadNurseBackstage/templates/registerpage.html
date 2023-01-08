@@ -17,30 +17,18 @@
   <body>
     <a href="/" class="btn btn-lg btn-default">返回</a>
     <div class="container">
-      <!-- <form class="form-signin" action="/registerpage" method="post">
-        {% csrf_token %}
-        <h2 class="form-signin-heading">欢迎来到护士长管理系统</h2>
-        <h5>用户名</h5> 
-        <input type="username" id="inputUsername" class="form-control" placeholder="张三" name="username" required autofocus>
-        <h5>密码</h5> 
-        <input type="password" id="inputPassword" class="form-control" placeholder="***" name="password" required>
-        <br>
-        <button class="btn btn-lg btn-primary btn-block" type="submit">注册</button>
-      </form> -->
-
       <div class="form-signin" name="registerform" >
-        <!-- {% csrf_token %} -->
         <h2 class="form-signin-heading">欢迎来到护士长管理系统</h2>
         <h5>工作证号</h5> 
         <input type="NurseWorkPermitNumber" id="inputNurseWorkPermitNumber" class="form-control" placeholder="" name="NurseWorkPermitNumber" required autofocus>
         <h5>工作证密码</h5> 
-        <input type="NurseWorkPermitPassword" id="inputNurseWorkPermitPassword" class="form-control" placeholder="" name="NurseWorkPermitPassword" required>
+        <input type="password" id="inputNurseWorkPermitPassword" class="form-control" placeholder="" name="NurseWorkPermitPassword" required>
         <h5>护士姓名</h5> 
         <input type="NurseName" id="inputNurseName" class="form-control" placeholder="" name="NurseName" required> 
         <h5>用户名</h5> 
         <input type="username" id="inputUsername" class="form-control" placeholder="" name="username" required>
         <h5>密码</h5> 
-        <input type="password" id="inputPassword" class="form-control" placeholder="" name="password" required>
+        <input type="user_password" id="inputPassword" class="form-control" placeholder="" name="password" required>
         <br>
         <button class="btn btn-lg btn-primary btn-block" onclick="register()">注册</button>
       </div>
@@ -105,6 +93,7 @@
       document.getElementById("inputNurseName").value = "";
       document.getElementById("inputUsername").value = "";
       document.getElementById("inputPassword").value = "";
+      alert("注册失败！")
     });
   } 
 </script> 
