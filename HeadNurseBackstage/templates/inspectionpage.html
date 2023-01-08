@@ -33,70 +33,29 @@
             <li><a id="jumptoinspectionpage" href="#">巡查记录</a></li>
             <li><a id="jumptohazardpage" href="#">隐患记录</a></li>
           </ul>
-          <!-- <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form> -->
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">欢迎,{{username}},{{time}} </a></li>
           </ul>
-          <!-- <form class="navbar-form navbar-right" action="/mainpage" method="post">
-            <button type="submit" class="btn btn-danger">登出</button>
-          </form> -->
         </div>
       </div>
     </nav>
 
     <div class="container-fluid">
       <div class="row">
-        <!-- sidebar -->
-        <!-- <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-            <li><a href="">More navigation</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-          </ul>
-        </div> -->
-
         <!-- main -->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">巡查记录</h1>
 
-          <!-- search bar -->
           <div class="row">
             <div class="col-lg-6">
-              <!-- <form action="/hazardpage" method="post">
-              {% csrf_token %}
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="搜索报告提交时间">
-                    <span class="input-group-btn">
-                      <button class="btn btn-success" type="submit">新增记录</button>
-                    </span>
-                </div>
-              </form> -->
               <div class="input-group">
-                <!-- <input type="text" class="form-control" placeholder="搜索报告提交时间"> -->
                 <input type="text" class="form-control">
                 <span class="input-group-btn">
-                  <button id="addRecord" class="btn btn-success">新增记录</button>
+                  <button id="addRecord" class="btn btn-success" >新增记录</button>
                 </span>
              </div>
             </div>
           </div><!-- /.row -->
-
-
 
           <div class="modal fade" id="confirmDeleteRecordModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteRecordModalLabel">
             <div class="modal-dialog" role="document">
@@ -113,10 +72,6 @@
             </div>
           </div>          
 
-
-
-
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
           <div class="modal fade" id="addRecordModal" tabindex="-1" role="dialog" aria-labelledby="addRecordModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -124,9 +79,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                         <h4 class="modal-title" id="addNurseModalLabel">新增记录</h4>
                     </div>
-                    <!-- <form class="form-addRecord" action="/inspectionpage" method="post"> -->
                     <div class="form-addRecord" name="addRecordForm">
-                      <!-- {% csrf_token %} -->
                       <div class="modal-body">
                           <h5>护士工作证号</h5> 
                           <input id="add_idNurse" type="idNurse" class="form-control" placeholder="" name="idNurse"  autofocus>
@@ -145,9 +98,7 @@
                 </div>
             </div>
           </div>
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
           <div class="modal fade" id="editRecordModal" tabindex="-1" role="dialog" aria-labelledby="editRecordModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -155,7 +106,6 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                         <h4 class="modal-title" id="editRecordModalLabel">编辑记录</h4>
                     </div>
-                    <!-- <form class="form-addRecord" action="/inspectionpage" method="post"> -->
                     <div class="form-addRecord" name="editRecordForm">
                       <!-- {% csrf_token %} -->
                       <div class="modal-body">
@@ -176,8 +126,6 @@
                 </div>
             </div>
           </div>
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-
 
           <!-- list -->
           <h2 class="sub-header">巡查记录</h2>
@@ -201,11 +149,6 @@
                   <td>{{val.inspectionInfo}}</td>
                   <td>{{val.inspectionDateTime}}</td>
                   <td>
-                    <!-- <form action="/hazardpage" method="post">
-                      {% csrf_token %}
-                      <button class="btn btn-primary" name="EditNurse" value="{{val.NurseworkPermitNumber}}" type="submit">编辑</button>
-                      <button class="btn btn-primary btn-danger" name="DeleteNurse" value="{{val.NurseworkPermitNumber}}" type="submit">删除</button>
-                    </form> -->
                     <button id="editRecord{{val.idNurse}}_{{val.inspectionDateTime}}" class="btn btn-primary" name="EditRecord" value="{{val.idNurse}}" onclick="showEditRecordForm( '{{val.idNurse}}','{{val.inspectionDateTime}}' )">编辑</button>
                   </td>
                   <td>  
@@ -235,32 +178,10 @@
 </html>
 
 <script>
-
   $("#jumptomainpage").attr("href","/mainpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
   $("#jumptonursemanagementpage").attr("href","/nursemanagementpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
   $("#jumptoinspectionpage").attr("href","/inspectionpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
   $("#jumptohazardpage").attr("href","/hazardpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
-
-
-  /*
-  if(localStorage.getItem("nursemanagementpagerecordnum") == null ){
-    localStorage.setItem("nursemanagementpagerecordnum",0); 
-    localStorage.setItem("nursemanagementpagerecordnow",0); 
-    let tmp1 = []
-    localStorage.setItem("nursemanagementpagerecordlist",tmp1); 
-  }
-  if(localStorage.getItem("inspectionpagerecordnum") == null ){
-    localStorage.setItem("inspectionpagerecordnum",0); 
-    localStorage.setItem("inspectionpagerecordnow",0); 
-    let tmp2 = []
-    localStorage.setItem("inspectionpagerecordlist",tmp2); 
-  }
-  if(localStorage.getItem("hazardpagerecordnum") == null ){
-    localStorage.setItem("hazardpagerecordnum",0); 
-    localStorage.setItem("hazardpagerecordnow",0); 
-    let tmp3 = []
-    localStorage.setItem("hazardpagerecordlist",tmp3); 
-  }*/
 
   //显示新增记录窗口
   $("#addRecord").click(function () {
@@ -292,7 +213,6 @@
       alert("输入不应为空！")
       return;
     }
-
 
     //在header中添加jwt
     let config = {
@@ -339,54 +259,12 @@
           button_edit.className = "btn btn-primary";
           button_edit.innerHTML = "编辑";
           button_edit.onclick= ()=>showEditRecordForm(idNurse,inspectionDateTime )
-          //button_edit.setAttribute('onclick','editRecord()');
           button_delete.id = "deleteRecord" + idNurse+"_"+inspectionDateTime;
           button_delete.className = "btn btn-primary btn-danger";
           button_delete.innerHTML = "删除";
           button_delete.onclick= ()=>deleteRecord(idNurse,inspectionDateTime )
-          //button_delete.setAttribute('onclick','deleteRecord()');
-
-          // 添加新增信息至localStorage中
-          /*
-          let recordnum = parseInt(localStorage.getItem("inspectionpagerecordnum")); 
-          if(recordnum < 20){   //储存最近的20条记录
-          //  var dicttmp = {"type":"addRecord", "idNurse":idNurse,"location":location,"inspectionInfo":inspectionInfo, "inspectionDateTime":inspectionDateTime,
-          //                "time":"{{time}}"  };
-            var dicttmp = ["addRecord",idNurse,location,inspectionInfo,inspectionDateTime,"{{time}}"];
-            recordnum += 1;
-            localStorage.setItem("inspectionpagerecord"+recordnum,dicttmp.toString());
-            localStorage.setItem("inspectionpagerecordnum",recordnum);
-            localStorage.setItem("inspectionpagerecordnow", parseInt(localStorage.getItem("inspectionpagerecordnow"))+1);
-            var inspectionpagerecordlist = localStorage.getItem("inspectionpagerecordlist")
-            if (inspectionpagerecordlist == ""){
-              inspectionpagerecordlist = []
-            }
-            else{
-              inspectionpagerecordlist = inspectionpagerecordlist.split(",")
-            }
-
-            inspectionpagerecordlist.push(recordnum)
-            localStorage.setItem("inspectionpagerecordlist",  inspectionpagerecordlist.toString() );
-          }
-          else{   //recordnum =20
-            //var dicttmp = {"type":"addRecord", "idNurse":idNurse,"location":location,"inspectionInfo":inspectionInfo, "inspectionDateTime":inspectionDateTime,
-            //              "time":"{{time}}" } ;
-            var dicttmp = ["addRecord",idNurse,location,inspectionInfo,inspectionDateTime,"{{time}}"];
-            let recordnow = (parseInt(localStorage.getItem("inspectionpagerecordnow")) % 20) + 1;
-            localStorage.setItem("inspectionpagerecord"+recordnow,dicttmp.toString());
-            localStorage.setItem("inspectionpagerecordnow", recordnow);
-            var recordlisttmp=[];
-            var k=recordnow % 20 + 1;
-            for(var i=0;i<20;i++){
-              recordlisttmp.push(k);
-              k = k%20 + 1;
-            }
-            localStorage.setItem("inspectionpagerecordlist", recordlisttmp.toString() );
-          }   */
-
         } 
         else {
-          console.log("状态码错误")
           document.getElementById("add_idNurse").value = "";
           document.getElementById("add_inspectionDateTime").value = "";
           document.getElementById("add_location").value = "";
@@ -395,8 +273,6 @@
         }      
     })
     .catch(resp => {
-      console.log("异常错误")
-      console.log(resp)
       //添加失败,清空input,留在原页面
       document.getElementById("add_idNurse").value = "";
       document.getElementById("add_inspectionDateTime").value = "";
@@ -411,8 +287,6 @@
     let inspectionDateTime = document.getElementById("EditInspectionDateTime").placeholder;
     let location = document.getElementById("edit_location").value;
     let inspectionInfo = document.getElementById("edit_inspectionInfo").value;
-
-    console.log(inspectionDateTime)
 
     if(location == ""||inspectionInfo==""){
       document.getElementById("edit_location").value = "";
@@ -432,46 +306,14 @@
     //发送post请求
     axios.put('inspectionpage?idNurse='+idNurse+"&inspectionDateTime="+encodeURIComponent(inspectionDateTime), dataPack, config)
     .then(resp => {
-        //console.log(resp.data.data)
         if(resp.data.state == "200" ){
           //添加成功,修改表格信息
-          console.log(resp.data.state)
           document.getElementById("edit_location").value = "";
           document.getElementById("edit_inspectionInfo").value = "";
           //隐藏modal
           $('#editRecordModal').modal('hide');
           document.getElementById("tr_"+idNurse+"_"+inspectionDateTime).children[1].innerHTML = location;
           document.getElementById("tr_"+idNurse+"_"+inspectionDateTime).children[2].innerHTML = inspectionInfo;
-
-          /*
-          // 添加新增信息至localStorage中
-          let recordnum = localStorage.getItem("inspectionpagerecordnum"); 
-          if(recordnum < 20){   //储存最近的20条记录
-            var dicttmp = {"type":"editRecord", "idNurse":idNurse,"location":location,"inspectionInfo":inspectionInfo, "inspectionDateTime":inspectionDateTime,
-                          "time":"{{time}}"  };
-            recordnum += 1;
-            localStorage.setItem("inspectionpagerecord"+recordnum,dicttmp);
-            localStorage.setItem("inspectionpagerecordnum",recordnum);
-            localStorage.setItem("inspectionpagerecordnow", localStorage.getItem("inspectionpagerecordnow")+1);
-            var inspectionpagerecordlist = localStorage.getItem("inspectionpagerecordlist")
-            inspectionpagerecordlist.push(recordnum)
-            localStorage.setItem("inspectionpagerecordlist",  inspectionpagerecordlist );
-          }
-          else{   //recordnum =20
-            var dicttmp = {"type":"editRecord", "idNurse":idNurse,"location":location,"inspectionInfo":inspectionInfo, "inspectionDateTime":inspectionDateTime,
-                          "time":"{{time}}" } ;
-            recordnow = ((localStorage.getItem("inspectionpagerecordnow")) % 20) + 1;
-            localStorage.setItem("inspectionpagerecord"+recordnow,dicttmp);
-            localStorage.setItem("inspectionpagerecordnow", recordnow);
-            var recordlisttmp=[];
-            var k=recordnow % 20 + 1;
-            for(var i=0;i<20;i++){
-              recordlisttmp.push(k);
-              k = k%20 + 1;
-            }
-            localStorage.setItem("inspectionpagerecordlist", recordlisttmp );
-          }   */
-
         } 
         else {
           //添加失败
@@ -487,11 +329,6 @@
       alert("修改失败!")
     });
   }
-
-
-
-
-
 
   //deleteNurse 
   function confirmDeleteRecord(idNurse,inspectionDateTime){
@@ -509,51 +346,17 @@
         if(resp.data.state == "200" ){
           var deleteRecordButton = document.getElementById("deleteRecord"+idNurse+"_"+inspectionDateTime);
           deleteRecordButton.parentNode.parentNode.remove();
-
-          /*
-          // 添加新增信息至localStorage中
-          let recordnum = localStorage.getItem("inspectionpagerecordnum"); 
-          if(recordnum < 20){   //储存最近的20条记录
-            var dicttmp = {"type":"deleteRecord", "idNurse":idNurse,"location":location,"inspectionInfo":inspectionInfo, "inspectionDateTime":inspectionDateTime,
-                          "time":"{{time}}"};
-            recordnum += 1;
-            localStorage.setItem("inspectionpagerecord"+recordnum,dicttmp);
-            localStorage.setItem("inspectionpagerecordnum",recordnum);
-            localStorage.setItem("inspectionpagerecordnow", localStorage.getItem("inspectionpagerecordnow")+1);
-            var inspectionpagerecordlist = localStorage.getItem("inspectionpagerecordlist")
-            inspectionpagerecordlist.push(recordnum)
-            localStorage.setItem("inspectionpagerecordlist",  inspectionpagerecordlist );
-          }
-          else{   //recordnum =20
-            var dicttmp = {"type":"deleteRecord", "idNurse":idNurse,"location":location,"inspectionInfo":inspectionInfo, "inspectionDateTime":inspectionDateTime,
-                          "time":"{{time}}" } ;
-            recordnow = ((localStorage.getItem("inspectionpagerecordnow")) % 20) + 1;
-            localStorage.setItem("inspectionpagerecord"+recordnow,dicttmp);
-            localStorage.setItem("inspectionpagerecordnow", recordnow);
-            var recordlisttmp=[];
-            var k=recordnow % 20 + 1;
-            for(var i=0;i<20;i++){
-              recordlisttmp.push(k);
-              k = k%20 + 1;
-            }
-            localStorage.setItem("inspectionpagerecordlist", recordlisttmp );
-          }   */
-
         } 
         else {
         }      
     })
     .catch(resp => {
     });
-
   }
 
   function deleteRecord(idNurse,inspectionDateTime){
     $('#confirmDeleteRecordModal').modal();
     document.getElementById("confirmDeleteButton").onclick = ()=>confirmDeleteRecord(idNurse,inspectionDateTime);
-
   }
-
-
 
 </script>

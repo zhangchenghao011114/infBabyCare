@@ -6,3 +6,4 @@ mysql/
 db.sqlite3
 venv/
 backlogic123/
+*.jpg

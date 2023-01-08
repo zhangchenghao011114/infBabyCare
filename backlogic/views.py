@@ -6,7 +6,6 @@ import json
 import os
 from django.utils import timezone
 import pytz
-# Create your views here.
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -506,7 +505,7 @@ class patientGroups(View):
         # 根据传递过来的内容修改病人信息
         #TODO 可修改病人id
         listtext = json.loads(request.body)
-        
+        print(listtext)
         for item in paitentIdList:
             if item == patient_id: # 存在该病人信息
                 patient_obj = PatientInfo.objects.filter(InpatientNumber = item).first()
@@ -544,6 +543,10 @@ class patientGroups(View):
         for item in paitentIdList:
             if item == patient_id: # 存在该病人信息
                 patient_obj = PatientInfo.objects.filter(InpatientNumber = item)
+                images_dir = os.path.join( os.path.dirname(__file__) , 'img' )
+                image_name = 'patient_' + patient_obj[0].InpatientNumber + '.jpg'
+                img_path = os.path.join(images_dir , image_name )
+                os.remove(img_path)
                 patient_obj[0].delete()
                 NurseToPaientInfo.objects.filter(nurseWorkPermitNumber = idnurse,InpatientNumber = item).delete() 
                 InfusionRecords.objects.filter(idPatient = patient_id).delete() 
@@ -577,30 +580,6 @@ class nurseGroups(View):
             returnjson = {'state':'400','message':'No infusion record'}
             print(returnjson)
             return HttpResponse(json.dumps(returnjson))
-
-def remoteLoginVerification(request):
-    # 获取该名护士照顾的所有病人的信息
-    # 验证http请求head中的jwt
-    verification_jwt = request.META['HTTP_LOGINJWT']  #规定jwt存在header的HTTP_LOGINJWT中
-    print('patient2nurse:')
-    print(verification_jwt)
-
-    # 建议传过来的jwt是否可解码
-    payload = decode_jwt_back(verification_jwt)
-    if payload:
-        pass
-    else:
-        return false
-        # returnjson = {'state':'400','message':'登录状态异常,jwt不存在'}
-        # return HttpResponse(json.dumps(returnjson))
-
-    # 可解码的情况下，判断该jwt是否与数据库中的jwt相同，不同则说明这个jwt是被顶掉的
-    idnurse = verify_jwt(verification_jwt)
-    print(idnurse)
-    if idnurse:
-        return true       
-    else:
-        return false
 
 class patient2nurse(View):
     def get(self,request):# get all patients of this nurse

@@ -33,71 +33,31 @@
             <li><a id="jumptoinspectionpage" href="#">巡查记录</a></li>
             <li><a id="jumptohazardpage" href="#">隐患记录</a></li>
           </ul>
-          <!-- <form class="navbar-form navbar-right">
-            <input type="text" class="form-control" placeholder="Search...">
-          </form> -->
           <ul class="nav navbar-nav navbar-right">
             <li><a href="#">欢迎,{{username}},{{time}} </a></li>
           </ul>
-          <!-- <form class="navbar-form navbar-right" action="/mainpage" method="post">
-            <button type="submit" class="btn btn-danger">登出</button>
-          </form> -->
         </div>
       </div>
     </nav>
 
     <div class="container-fluid">
       <div class="row">
-        <!-- sidebar -->
-        <!-- <div class="col-sm-3 col-md-2 sidebar">
-          <ul class="nav nav-sidebar">
-            <li class="active"><a href="#">Overview <span class="sr-only">(current)</span></a></li>
-            <li><a href="#">Reports</a></li>
-            <li><a href="#">Analytics</a></li>
-            <li><a href="#">Export</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item</a></li>
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-            <li><a href="">More navigation</a></li>
-          </ul>
-          <ul class="nav nav-sidebar">
-            <li><a href="">Nav item again</a></li>
-            <li><a href="">One more nav</a></li>
-            <li><a href="">Another nav item</a></li>
-          </ul>
-        </div> -->
 
         <!-- main -->
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
           <h1 class="page-header">护士管理</h1>
 
-          <!-- search bar -->
           <div class="row">
             <div class="col-lg-6">
-              <!-- <form action="/nursemanagementpage" method="post">
-                {% csrf_token %}
-                <div class="input-group">
-                    <input type="text" class="form-control" placeholder="搜索姓名/工作证号">
-                    <span class="input-group-btn">
-                      <button id="addNurse" class="btn btn-success" type="submit" >新增护士</button>
-                    </span>
-                </div>
-              </form> -->
-
               <div class="input-group">
-                  <!-- <input type="text" class="form-control" placeholder="搜索姓名/工作证号"> -->
                   <input type="text" class="form-control" >
                   <span class="input-group-btn">
-                    <button id="addNurse" class="btn btn-success"">新增护士</button>
+                    <button id="addNurse" class="btn btn-success" >新增护士</button>
                   </span>
               </div><!-- /input-group -->
 
             </div><!-- /.col-lg-6 -->
           </div><!-- /.row -->
-
 
           <div class="modal fade" id="confirmDeleteNurseModal" tabindex="-1" role="dialog" aria-labelledby="confirmDeleteNurseModalLabel">
             <div class="modal-dialog" role="document">
@@ -114,9 +74,6 @@
             </div>
           </div>
 
-
-
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
           <div class="modal fade" id="addNurseModal" tabindex="-1" role="dialog" aria-labelledby="addNurseModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -124,9 +81,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                         <h4 class="modal-title" id="addNurseModalLabel">新增护士</h4>
                     </div>
-                    <!-- <form class="form-addNurse" action="/nursemanagementpage" method="post"> -->
                     <div class="form-addNurse" name="addNurseForm">  
-                      <!-- {% csrf_token %} -->
                       <div class="modal-body">
                           <h5>工作证号</h5> 
                           <input id="add_NurseworkPermitNumber" type="NurseworkPermitNumber" class="form-control" placeholder="***" name="NurseworkPermitNumber" autocomplete="" required autofocus>
@@ -147,9 +102,7 @@
                 </div>
             </div>
           </div>
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
 
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
           <div class="modal fade" id="editNurseModal" tabindex="-1" role="dialog" aria-labelledby="editNurseModalLabel">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
@@ -157,9 +110,7 @@
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true"></span></button>
                         <h4 class="modal-title" id="editNurseModalLabel">编辑护士</h4>
                     </div>
-                    <!-- <div class="form-addNurse" action="/nursemanagementpage" method="post"> -->
                     <div class="form-editNurse" name="editNurseForm">  
-                      <!-- {% csrf_token %} -->
                       <div class="modal-body">
                           <h5>工作证号</h5> 
                           <input id="EditNurseworkPermitNumber" type="NurseworkPermitNumber" class="form-control" placeholder="工作证号" name="NurseworkPermitNumber" disabled>
@@ -180,9 +131,6 @@
                 </div>
             </div>
           </div>
-          <!-- !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! -->
-
-
 
           <!-- list -->
           <h2 class="sub-header">护士管理</h2>
@@ -243,26 +191,6 @@
   $("#jumptoinspectionpage").attr("href","/inspectionpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
   $("#jumptohazardpage").attr("href","/hazardpage?username="+{{username}}+"&jwt="+localStorage.getItem("jwt"));
 
-  //设置最近记录的次数
-  /*if(localStorage.getItem("nursemanagementpagerecordnum") == null ){
-    localStorage.setItem("nursemanagementpagerecordnum",0); 
-    localStorage.setItem("nursemanagementpagerecordnow",0); 
-    let tmp1 = []
-    localStorage.setItem("nursemanagementpagerecordlist",tmp1); 
-  }
-  if(localStorage.getItem("inspectionpagerecordnum") == null ){
-    localStorage.setItem("inspectionpagerecordnum",0); 
-    localStorage.setItem("inspectionpagerecordnow",0); 
-    let tmp2 = []
-    localStorage.setItem("inspectionpagerecordlist",tmp2); 
-  }
-  if(localStorage.getItem("hazardpagerecordnum") == null ){
-    localStorage.setItem("hazardpagerecordnum",0); 
-    localStorage.setItem("hazardpagerecordnow",0); 
-    let tmp3 = []
-    localStorage.setItem("hazardpagerecordlist",tmp3); 
-  }*/
-
   //显示新增护士窗口
   $("#addNurse").click(function () {
     $('#addNurseModal').modal();
@@ -294,7 +222,6 @@
       return;
     }
       
-
     //在header中添加jwt
     let config = {
       headers:{
@@ -340,45 +267,11 @@
           button_edit.id = "editNurse" + NurseworkPermitNumber;
           button_edit.className = "btn btn-primary";
           button_edit.innerHTML = "编辑";
-
-          //button_edit.attachEvent("onclick", ()=>showEditNurseForm(NurseworkPermitNumber,NurseworkPermitPassword ));
           button_edit.onclick= ()=>showEditNurseForm(NurseworkPermitNumber,NurseworkPermitPassword )
-
           button_delete.id = "deleteNurse" + NurseworkPermitNumber;
           button_delete.className = "btn btn-primary btn-danger";
           button_delete.innerHTML = "删除";
-
           button_delete.onclick= ()=>deleteNurse(NurseworkPermitNumber)
-          //button_delete.attachEvent("onclick", ()=>deleteNurse(NurseworkPermitNumber));
-
-          // 添加新增信息至localStorage中
-          /*let recordnum = localStorage.getItem("nursemanagementpagerecordnum"); 
-          if(recordnum < 20){   //储存最近的20条记录
-            var dicttmp = {"type":"addNurse","NurseName":NurseName, "NurseworkPermitNumber": NurseworkPermitNumber, "NurseworkPermitPassword":NurseworkPermitPassword, "username":username,"password":password,
-                          "time":"{{time}}"};
-            recordnum += 1;
-            localStorage.setItem("nursemanagementpagerecord"+recordnum,dicttmp);
-            localStorage.setItem("nursemanagementpagerecordnum",recordnum);
-            localStorage.setItem("nursemanagementpagerecordnow", localStorage.getItem("nursemanagementpagerecordnow")+1);
-            var nursemanagementpagerecordlist = localStorage.getItem("nursemanagementpagerecordlist")
-            nursemanagementpagerecordlist.push(recordnum)
-            localStorage.setItem("nursemanagementpagerecordlist",  nursemanagementpagerecordlist );
-          }
-          else{   //recordnum =20
-            var dicttmp = {"type":"addNurse","NurseName":NurseName, "NurseworkPermitNumber": NurseworkPermitNumber, "NurseworkPermitPassword":NurseworkPermitPassword, "username":username,"password":password,
-                        "time":"{{time}}"};
-            recordnow = ((localStorage.getItem("nursemanagementpagerecordnow")) % 20) + 1;
-            localStorage.setItem("nursemanagementpagerecord"+recordnow,dicttmp);
-            localStorage.setItem("nursemanagementpagerecordnow", recordnow);
-            var recordlisttmp=[];
-            var k=recordnow % 20 + 1;
-            for(var i=0;i<20;i++){
-              recordlisttmp.push(k);
-              k = k%20 + 1;
-            }
-            localStorage.setItem("nursemanagementpagerecordlist", recordlisttmp );
-          }*/
-
         } 
         else {
           document.getElementById("add_NurseworkPermitNumber").value = "";
@@ -427,10 +320,8 @@
     //发送post请求
     axios.put('nursemanagementpage?NurseworkPermitNumber=' + NurseworkPermitNumber, dataPack, config)
     .then(resp => {
-        //console.log(resp.data.data)
         if(resp.data.state == "200"){
           //编辑成功,修改表格信息
-          console.log(resp.data.state)
           document.getElementById("edit_NurseName").value = "";
           document.getElementById("edit_Username").value = "";
           document.getElementById("edit_Password").value = "";
@@ -439,35 +330,6 @@
           document.getElementById("tr_"+NurseworkPermitNumber).children[0].innerHTML = NurseName;
           document.getElementById("tr_"+NurseworkPermitNumber).children[3].innerHTML = username;
           document.getElementById("tr_"+NurseworkPermitNumber).children[4].innerHTML = password;
-          
-          // 添加新增信息至localStorage中
-          /*
-          let recordnum = localStorage.getItem("nursemanagementpagerecordnum"); 
-          if(recordnum < 20){   //储存最近的20条记录
-            var dicttmp = {"type":"editNurse","NurseName":NurseName, "NurseworkPermitNumber": NurseworkPermitNumber, "NurseworkPermitPassword":NurseworkPermitPassword, "username":username,"password":password,
-                          "time":"{{time}}"};
-            recordnum += 1;
-            localStorage.setItem("nursemanagementpagerecord"+recordnum,dicttmp);
-            localStorage.setItem("nursemanagementpagerecordnum",recordnum);
-            localStorage.setItem("nursemanagementpagerecordnow", localStorage.getItem("nursemanagementpagerecordnow")+1);
-            var nursemanagementpagerecordlist = localStorage.getItem("nursemanagementpagerecordlist")
-            nursemanagementpagerecordlist.push(recordnum)
-            localStorage.setItem("nursemanagementpagerecordlist",  nursemanagementpagerecordlist );
-          }
-          else{   //recordnum =20
-            var dicttmp = {"type":"editNurse","NurseName":NurseName, "NurseworkPermitNumber": NurseworkPermitNumber, "NurseworkPermitPassword":NurseworkPermitPassword, "username":username,"password":password,
-                          "time":"{{time}}"};
-            recordnow = ((localStorage.getItem("nursemanagementpagerecordnow")) % 20) + 1;
-            localStorage.setItem("nursemanagementpagerecord"+recordnow,dicttmp);
-            localStorage.setItem("nursemanagementpagerecordnow", recordnow);
-            var recordlisttmp=[];
-            var k=recordnow % 20 + 1;
-            for(var i=0;i<20;i++){
-              recordlisttmp.push(k);
-              k = k%20 + 1;
-            }
-            localStorage.setItem("nursemanagementpagerecordlist", recordlisttmp );
-          }          */
         } 
         else {
           //编辑失败
@@ -486,11 +348,6 @@
     });
   }
 
-
-
-
-
-
   //deleteNurse 
   function confirmDeleteNurse(NurseworkPermitNumber){
     $('#confirmDeleteNurseModal').modal('hide');
@@ -506,35 +363,6 @@
         if(resp.data.state == "200"){
           var deleteNurseButton = document.getElementById("deleteNurse"+NurseworkPermitNumber);
           deleteNurseButton.parentNode.parentNode.remove();
-
-          /*
-          // 添加新增信息至localStorage中
-          let recordnum = localStorage.getItem("nursemanagementpagerecordnum"); 
-          if(recordnum < 20){   //储存最近的20条记录
-            var dicttmp = {"type":"deleteNurse","NurseName":NurseName, "NurseworkPermitNumber": NurseworkPermitNumber, "NurseworkPermitPassword":NurseworkPermitPassword, "username":username,"password":password,
-                          "time":"{{time}}" };
-            recordnum += 1;
-            localStorage.setItem("nursemanagementpagerecord"+recordnum,dicttmp);
-            localStorage.setItem("nursemanagementpagerecordnum",recordnum);
-            localStorage.setItem("nursemanagementpagerecordnow", localStorage.getItem("nursemanagementpagerecordnow")+1);
-            var nursemanagementpagerecordlist = localStorage.getItem("nursemanagementpagerecordlist")
-            nursemanagementpagerecordlist.push(recordnum)
-            localStorage.setItem("nursemanagementpagerecordlist",  nursemanagementpagerecordlist );
-          }
-          else{   //recordnum =20
-            var dicttmp = {"type":"deleteNurse","NurseName":NurseName, "NurseworkPermitNumber": NurseworkPermitNumber, "NurseworkPermitPassword":NurseworkPermitPassword, "username":username,"password":password,
-                          "time":"{{time}}" };
-            recordnow = ((localStorage.getItem("nursemanagementpagerecordnow")) % 20) + 1;
-            localStorage.setItem("nursemanagementpagerecord"+recordnow,dicttmp);
-            localStorage.setItem("nursemanagementpagerecordnow", recordnow);
-            var recordlisttmp=[];
-            var k=recordnow % 20 + 1;
-            for(var i=0;i<20;i++){
-              recordlisttmp.push(k);
-              k = k%20 + 1;
-            }
-            localStorage.setItem("nursemanagementpagerecordlist", recordlisttmp );
-          }   */
         } 
         else {
         }      
@@ -543,13 +371,9 @@
     });
   }
 
-
-    // 
-    function deleteNurse(NurseworkPermitNumber){
-      $('#confirmDeleteNurseModal').modal();
-      document.getElementById("confirmDeleteButton").onclick = ()=>confirmDeleteNurse(NurseworkPermitNumber);
-
-    }
-
+  function deleteNurse(NurseworkPermitNumber){
+    $('#confirmDeleteNurseModal').modal();
+    document.getElementById("confirmDeleteButton").onclick = ()=>confirmDeleteNurse(NurseworkPermitNumber);
+  }
 
 </script>

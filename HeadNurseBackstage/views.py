@@ -10,20 +10,6 @@ from django.utils import timezone
 import pytz
 import time
 from urllib import parse
-# Create your views here.
-
-# nursedata = {"123456":{"NurseName":"丁真","NurseworkPermitNumber":"123456","NurseWorkPermitPassword":"666",
-#                        "usrname":"瑞克五代","password":"测尼玛"},
-#              "1":{"NurseName":"王源","NurseworkPermitNumber":"2","NurseWorkPermitPassword":"3",
-#                        "usrname":"5","password":"6"}}
-# inspectiondata = {"123456":{"idNurse":"123456","location":"四川理塘","inspectionInfo":"妈妈在给我充电子烟",
-#                        "inspectionDateTime":"2022/11/19 11:00"},
-#                   "1":{"idNurse":"123456","location":"四川理塘","inspectionInfo":"妈妈在给我充电子烟",
-#                        "inspectionDateTime":"2022/11/19 11:00"}}
-# hazarddata = {"123456":{"idNurse":"123456","location":"四川理塘","hazardInfo":"雪豹闭嘴",
-#                        "hazardDateTime":"2022/11/19 11:00"},
-#               "1":{"idNurse":"123456","location":"四川理塘","hazardInfo":"雪豹闭嘴",
-#                        "hazardDateTime":"2022/11/19 11:00"}}
 
 def logpage(request):
     if request.method == "GET":
@@ -110,8 +96,6 @@ def mainpage(request):
             return redirect("/")       
         timenow = time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time()))
         return render(request,"mainpage.html",{"username":username,"time":timenow})
-    # elif request.method == "POST":
-    #     return redirect("/")
 
 def nursemanagementpage(request):
     if request.method == "GET":
@@ -126,8 +110,6 @@ def nursemanagementpage(request):
             return redirect("/")
         nursedata = {}
         idhead = HeadNurseInfo.objects.filter(login_jwt=jwt)[0].workPermitNumber
-        # idhead = HeadNurseInfo.objects.filter(username=username)
-        # objs = NurseInfo.objects.all()
         try:
             objs = Head2Nurse.objects.filter(headNurseWorkPermitNumber=idhead)
             if objs[0].nurseWorkPermitNumber:
@@ -227,8 +209,6 @@ def inspectionpage(request):
         except:
             return redirect("/") 
         idhead = HeadNurseInfo.objects.filter(username=username)[0].workPermitNumber
-        # idhead = HeadNurseInfo.objects.filter(username=username)
-        # objs = NurseInfo.objects.all()
         try:
             objs = Head2Nurse.objects.filter(headNurseWorkPermitNumber=idhead)
             if objs[0].nurseWorkPermitNumber:
@@ -254,7 +234,6 @@ def inspectionpage(request):
         print(listtext)
         login_jwt = request.META['HTTP_LOGINJWT']  #规定jwt存在header的HTTP_LOGINJWT中
         idhead = HeadNurseInfo.objects.filter(login_jwt=login_jwt)[0].workPermitNumber
-        #idhead = HeadNurseInfo.objects.filter(username=username)[0].workPermitNumber
         idNurse = listtext['idNurse']
         obj = Head2Nurse.objects.filter(nurseWorkPermitNumber=idNurse,headNurseWorkPermitNumber=idhead)
         try:
@@ -320,9 +299,7 @@ def hazardpage(request):
                 return redirect("/")  
         except:
             return redirect("/")   
-        # idhead = HeadNurseInfo.objects.filter(username=username)[0].workPermitNumber
         idhead = HeadNurseInfo.objects.filter(login_jwt=jwt)[0].workPermitNumber
-        # objs = NurseInfo.objects.all()
         try:
             objs = Head2Nurse.objects.filter(headNurseWorkPermitNumber=idhead)
             if objs[0].nurseWorkPermitNumber:
@@ -347,9 +324,7 @@ def hazardpage(request):
         listtext = json.loads(request.body)
         print('hazard.POST',listtext)
         login_jwt = request.META['HTTP_LOGINJWT']  #规定jwt存在header的HTTP_LOGINJWT中
-        # return HttpResponse("asd")
         idhead = HeadNurseInfo.objects.filter(login_jwt=login_jwt)[0].workPermitNumber
-        # idhead = HeadNurseInfo.objects.filter(username=username)[0].workPermitNumber
         idNurse = listtext['idNurse']
         obj = Head2Nurse.objects.filter(nurseWorkPermitNumber=idNurse,headNurseWorkPermitNumber=idhead)
         try:

@@ -28,9 +28,7 @@
           <a class="navbar-brand" href="#">InfBabyCare</a>
         </div>
         <div id="navbar" class="navbar-collapse collapse">
-          <!-- <div class="navbar-form navbar-right" action="/" method="post"> -->
           <div class="navbar-form navbar-right" name="signform">  
-            <!-- {% csrf_token %} -->
             <div class="form-group">
               <input id="inputUsername" name="username" type="text" placeholder="用户名" class="form-control">
             </div>
@@ -40,13 +38,9 @@
             <button name="login" class="btn btn-success" onclick="login()">登录</button>
             <button name="register" class="btn btn-warning" onclick="register()">注册</button>
           </div>
-        </div><!--/.navbar-collapse -->
+        </div
       </div>
     </nav>
-
-
-
-
 
     <!-- Carousel
     ================================================== -->
@@ -64,8 +58,6 @@
             <div class="carousel-caption">
               <h1>住院部2栋今日完成装修</h1>
               <p>12月10日19：00，我院住院部2栋正式完成装修，预计将于明年1月投入使用</p>
-              <!-- <p>No.</p> -->
-              <!-- <p><a class="btn btn-lg btn-primary" href="#" role="button">Sign up today</a></p> -->
             </div>
           </div>
         </div>
@@ -85,8 +77,6 @@
             <div class="carousel-caption">
               <h1>患者家属向我院张医生团队致以感谢</h1>
               <p>12月15日，一名3岁患儿在我院张医生团队长达1个月的努力下，最终完成白血病二期手术，患者家属向张医生团队致以感谢</p>
-              <!-- <p>Cras</p> -->
-              <!-- <p><a class="btn btn-lg btn-primary" href="#" role="button">Browse gallery</a></p> -->
             </div>
           </div>
         </div>
@@ -101,52 +91,13 @@
       </a>
     </div><!-- /.carousel -->
 
-
-
-
-
-
-
-    <!-- Main jumbotron for a primary marketing message or call to action -->
-    <!-- <div class="jumbotron">
-      <div class="container">
-        <h1>公告</h1>
-        <p>今天新增病患3人</p>
-        <p><a class="btn btn-primary btn-lg" href="#" role="button">详情&raquo;</a></p>
-      </div>
-    </div> -->
-
     <div class="container">
-      <!-- Example row of columns -->
-
-      <!-- <div class="row">
-        <div class="col-md-4">
-          <h2>内容1</h2>
-          <p>你好 </p>
-          <p><a class="btn btn-default" href="#" role="button">详情&raquo;</a></p>
-        </div>
-        <div class="col-md-4">
-          <h2>内容2</h2>
-          <p>你好</p>
-          <p><a class="btn btn-default" href="#" role="button">详情&raquo;</a></p>
-       </div>
-        <div class="col-md-4">
-          <h2>内容3</h2>
-          <p>你好</p>
-          <p><a class="btn btn-default" href="#" role="button">详情&raquo;</a></p>
-        </div>
-      </div> -->
-
-
-
       <footer>
         <p>&copy; InfBabyCare.</p>
       </footer>
     </div> <!-- /container -->
   </body>
-  <!-- Bootstrap core JavaScript
-  ================================================== -->
-  <!-- Placed at the end of the document so the pages load faster -->
+
   <script src="https://code.jquery.com/jquery-1.12.4.min.js" integrity="sha384-nvAa0+6Qg9clwYCGGPpDQLVpLNn0fRaROjHqs13t4Ggj3Ez50XnGQqc/r8MhnRDZ" crossorigin="anonymous"></script>
   <script>window.jQuery || document.write('<script src="../../assets/js/vendor/jquery.min.js"><\/script>')</script>
   <script src="../static/js/bootstrap.min.js"></script>
@@ -185,16 +136,13 @@
 
     axios.post('', dataPack)
     .then(resp => {
-        console.log(resp.data)
         if(resp.data.state == 200 && resp.data.data[0].jwt != ""){
           localStorage.setItem("jwt",resp.data.data[0].jwt);
-          console.log("登录成功，jwt成功保存至本地:",resp.data.data[0].jwt)
           //登录成功，跳转至主页面
           window.location.href = axios.defaults.baseURL + "mainpage?username="+username + "&jwt=" + resp.data.data[0].jwt;
         } 
         else {
           //登录失败,清空input,留在原页面
-          console.log("登录失败")
           document.getElementById("inputUsername").value = "";
           document.getElementById("inputPassword").value = "";
           alert("登录失败")
@@ -202,8 +150,6 @@
     })
     .catch(resp => {
       //出现错误,清空input,留在原页面
-      console.log("出现错误")
-      console.log(resp)
       document.getElementById("inputUsername").value = "";
       document.getElementById("inputPassword").value = "";
       alert("登录失败")
